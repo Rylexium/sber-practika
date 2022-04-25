@@ -29,16 +29,22 @@ public class MainController {
     }
 
     @RequestMapping(value = "/authentication", method = RequestMethod.POST)
-    public ResponseEntity<?> createAuthenticationToken(@RequestBody AuthenticationRequest authenticationRequest) throws Exception {
+    public Object createAuthenticationToken(@RequestBody AuthenticationRequest authenticationRequest) throws Exception {
+        //здесь 2 раза ходит в базу
+        UserDetails userDetails;
         try {
-            authenticationManager.authenticate(
+            userDetails = userDetailsService.loadUserByUsername(authenticationRequest.getUsername()); //тут
+
+            if(userDetails == null) throw new BadCredentialsException("User not found");
+
+            authenticationManager.authenticate( //и тут
                     new UsernamePasswordAuthenticationToken(
                             authenticationRequest.getUsername(),
-                            authenticationRequest.getPassword()));
+                            userDetails.getPassword())
+            );
         } catch (BadCredentialsException e){
-            throw new Exception("Incorrect username or password", e);
+            return new HashMap<String, String>() {{put("status", "Incorrect username or password");}};
         }
-        final UserDetails userDetails = userDetailsService.loadUserByUsername(authenticationRequest.getUsername());
         final String jwt = jwtTokenUtil.generateToken(userDetails);
         return ResponseEntity.ok(new AuthenticationResponse(jwt));
     }
