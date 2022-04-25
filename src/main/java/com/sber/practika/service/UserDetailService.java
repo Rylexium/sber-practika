@@ -17,7 +17,9 @@ public class UserDetailService implements UserDetailsService {
     @Override
     public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
         com.sber.practika.entity.Users user = usersRepository.findUsersByUsername(username);
+
         if(user == null) return null;
+
         return new User(user.getUsername(),
                 HashPass.getHashSha256(user.getPassword(), user.getSalt1(), user.getSalt2()),
                 new ArrayList<>());
