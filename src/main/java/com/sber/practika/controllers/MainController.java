@@ -1,15 +1,13 @@
 package com.sber.practika.controllers;
 
 import com.sber.practika.models.AuthenticationRequest;
-import com.sber.practika.models.AuthenticationResponse;
-import com.sber.practika.util.JwtUtil;
+import com.sber.practika.security.jwt.JwtTokenProvider;
+import com.sber.practika.service.AuthorizationService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
-import org.springframework.security.authentication.AuthenticationManager;
-import org.springframework.security.authentication.BadCredentialsException;
-import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
+import org.springframework.security.core.AuthenticationException;
 import org.springframework.security.core.userdetails.UserDetails;
-import org.springframework.security.core.userdetails.UserDetailsService;
+import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.HashMap;
@@ -18,10 +16,8 @@ import java.util.HashMap;
 @RestController
 @RequestMapping("/")
 public class MainController {
-
-    private final AuthenticationManager authenticationManager;
-    private final UserDetailsService userDetailsService;
-    private final JwtUtil jwtTokenUtil;
+    private final AuthorizationService authorizationComponent;
+    private final JwtTokenProvider jwtTokenProvider;
 
     @RequestMapping("/hello")
     public Object authorization() {
@@ -29,23 +25,21 @@ public class MainController {
     }
 
     @RequestMapping(value = "/authentication", method = RequestMethod.POST)
-    public Object createAuthenticationToken(@RequestBody AuthenticationRequest authenticationRequest) throws Exception {
-        //здесь 2 раза ходит в базу
-        UserDetails userDetails;
+    public Object createAuthenticationToken(@RequestBody AuthenticationRequest authenticationRequest) {
         try {
-            userDetails = userDetailsService.loadUserByUsername(authenticationRequest.getUsername()); //тут
+            UserDetails user = authorizationComponent.login( authenticationRequest.getUsername(),
+                                                             authenticationRequest.getPassword());
+            if (user == null) throw new UsernameNotFoundException("User with username: " + authenticationRequest.getUsername() + " not found");
 
-            if(userDetails == null) throw new BadCredentialsException("User not found");
-
-            authenticationManager.authenticate( //и тут
-                    new UsernamePasswordAuthenticationToken(
-                            authenticationRequest.getUsername(),
-                            userDetails.getPassword())
-            );
-        } catch (BadCredentialsException e){
-            return new HashMap<String, String>() {{put("status", "Incorrect username or password");}};
+            return ResponseEntity.ok(new HashMap<String, String>() {
+                {
+                    put("status", "ok");
+                    put("username", authenticationRequest.getUsername());
+                    put("token", jwtTokenProvider.createToken(authenticationRequest.getUsername()));
+                }
+            });
+        } catch (AuthenticationException e) {
+            return new HashMap<String, String>() {{put("status", "Invalid username or password");}};
         }
-        final String jwt = jwtTokenUtil.generateToken(userDetails);
-        return ResponseEntity.ok(new AuthenticationResponse(jwt));
     }
 }

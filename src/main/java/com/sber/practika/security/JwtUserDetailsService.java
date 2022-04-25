@@ -1,28 +1,27 @@
-package com.sber.practika.service;
+package com.sber.practika.security;
 
+import com.sber.practika.entity.Users;
 import com.sber.practika.repo.UsersRepository;
-import com.sber.practika.util.HashPass;
+import com.sber.practika.security.jwt.JwtUserFactory;
 import lombok.RequiredArgsConstructor;
-import org.springframework.security.core.userdetails.User;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.stereotype.Service;
-import java.util.ArrayList;
 
 @RequiredArgsConstructor
 @Service
-public class UserDetailService implements UserDetailsService {
+public class JwtUserDetailsService implements UserDetailsService {
     private final UsersRepository usersRepository;
     @Override
     public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
-        com.sber.practika.entity.Users user = usersRepository.findUsersByUsername(username);
+        Users user = usersRepository.findUsersByUsername(username);
 
-        if(user == null) return null;
+        if (user == null)
+            throw new UsernameNotFoundException("User with username: " + username + " not found");
 
-        return new User(user.getUsername(),
-                HashPass.getHashSha256(user.getPassword(), user.getSalt1(), user.getSalt2()),
-                new ArrayList<>());
+
+        return JwtUserFactory.create(user);
     }
 }
 
