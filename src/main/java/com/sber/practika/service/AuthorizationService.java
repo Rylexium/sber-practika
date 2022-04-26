@@ -9,15 +9,17 @@ import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.stereotype.Service;
 
+import java.math.BigInteger;
+
 @Service
 @RequiredArgsConstructor
 public class AuthorizationService {
     private final UsersRepository usersRepository;
-    public UserDetails login(String username, String password) throws UsernameNotFoundException {
-        Users user = usersRepository.findUsersByUsername(username);
+    public UserDetails login(BigInteger phone, String password) throws UsernameNotFoundException {
+        Users user = usersRepository.findById(phone).orElse(null);
 
         if (user == null)
-            throw new UsernameNotFoundException("User with username: " + username + " not found");
+            throw new UsernameNotFoundException("User with username: " + phone + " not found");
 
         if(user.getPassword().equals(HashPass.getHashSha256(password, user.getSalt1(), user.getSalt2())))
             return JwtUserFactory.create(user);

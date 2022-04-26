@@ -8,15 +8,18 @@ public final class JwtUserFactory {
 
     public static JwtUser create(Users user) {
         return new JwtUser(
-                user.getUsername(),
+                user.getId(),
                 user.getPassword(),
                 user.getName(),
                 user.getFamily(),
                 user.getSalt1(), user.getSalt2(),
                 user.getPatronymic(),
                 user.getEmail(),
-                user.getPhone(),
-                user.getEnabled().equals(Status.ACTIVE)
+                user.getAddress(),
+                user.getEnabled().equals(Status.ACTIVE),
+                user.getBankNumber(),
+                user.getBalanceBank(),
+                user.getMainCardNumber()
         );
     }
 }

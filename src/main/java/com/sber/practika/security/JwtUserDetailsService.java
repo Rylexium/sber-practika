@@ -9,16 +9,18 @@ import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.stereotype.Service;
 
+import java.math.BigInteger;
+
 @RequiredArgsConstructor
 @Service
 public class JwtUserDetailsService implements UserDetailsService {
     private final UsersRepository usersRepository;
     @Override
-    public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
-        Users user = usersRepository.findUsersByUsername(username);
+    public UserDetails loadUserByUsername(String phone) throws UsernameNotFoundException {
+        Users user = usersRepository.findById(new BigInteger(phone)).orElse(null);
 
         if (user == null)
-            throw new UsernameNotFoundException("User with username: " + username + " not found");
+            throw new UsernameNotFoundException("User with username: " + phone + " not found");
 
 
         return JwtUserFactory.create(user);

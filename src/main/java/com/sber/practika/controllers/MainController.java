@@ -27,18 +27,19 @@ public class MainController {
     @RequestMapping(value = "/authentication", method = RequestMethod.POST)
     public Object createAuthenticationToken(@RequestBody AuthenticationRequest authenticationRequest) {
         try {
-            UserDetails user = authorizationComponent.login( authenticationRequest.getUsername(),
+            UserDetails user = authorizationComponent.login( authenticationRequest.getPhone(),
                                                              authenticationRequest.getPassword());
-            if (user == null) throw new UsernameNotFoundException("User with username: " + authenticationRequest.getUsername() + " not found");
+            if (user == null) throw new UsernameNotFoundException("User with username: " + authenticationRequest.getPhone() + " not found");
 
             return ResponseEntity.ok(new HashMap<String, String>() {
                 {
                     put("status", "ok");
-                    put("username", authenticationRequest.getUsername());
-                    put("token", jwtTokenProvider.createToken(authenticationRequest.getUsername()));
+                    put("phone", authenticationRequest.getPhone().toString());
+                    put("token", jwtTokenProvider.createToken(authenticationRequest.getPhone().toString()));
                 }
             });
-        } catch (AuthenticationException e) {
+        } catch (Exception e) {
+            System.out.println(e.getMessage());
             return new HashMap<String, String>() {{put("status", "Invalid username or password");}};
         }
     }

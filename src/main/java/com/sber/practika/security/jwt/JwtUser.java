@@ -4,6 +4,7 @@ import lombok.Data;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
 
+import java.math.BigInteger;
 import java.util.Collection;
 
 @Data
@@ -16,15 +17,21 @@ public class JwtUser implements UserDetails {
     private final String patronymic;
     private final String password;
     private final String email;
-    private final String phone;
+    private final String address;
     private final boolean enabled;
+    private final String bankNumber;
+    private final BigInteger balanceBank;
+    private final BigInteger mainCardNumber;
 
-    public JwtUser(String username, String password,
+    public JwtUser(BigInteger phone, String password,
                    String name, String family, String patronymic,
                    String salt1, String salt2,
-                   String email, String phone,
-                   boolean isEnabled) {
-        this.username = username;
+                   String email,
+                   String address, boolean isEnabled,
+                   String bankNumber,
+                   BigInteger balanceBank,
+                   BigInteger mainCardNumber) {
+        this.username = phone.toString();
         this.name = name;
         this.family = family;
         this.salt1 = salt1;
@@ -32,8 +39,11 @@ public class JwtUser implements UserDetails {
         this.patronymic = patronymic;
         this.password = password;
         this.email = email;
-        this.phone = phone;
+        this.address = address;
         this.enabled = isEnabled;
+        this.bankNumber = bankNumber;
+        this.balanceBank = balanceBank;
+        this.mainCardNumber = mainCardNumber;
     }
 
     @Override
