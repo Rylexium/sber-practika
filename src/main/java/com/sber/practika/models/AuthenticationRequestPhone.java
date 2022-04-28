@@ -5,7 +5,7 @@ import lombok.Data;
 import java.math.BigInteger;
 
 @Data
-public class AuthenticationRequest {
+public class AuthenticationRequestPhone {
     private BigInteger phone;
     private String password;
 }

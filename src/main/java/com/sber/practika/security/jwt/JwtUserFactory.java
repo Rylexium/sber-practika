@@ -8,7 +8,7 @@ public final class JwtUserFactory {
 
     public static JwtUser create(Users user) {
         return new JwtUser(
-                user.getId(),
+                user.getBankNumber(),
                 user.getPassword(),
                 user.getName(),
                 user.getFamily(),

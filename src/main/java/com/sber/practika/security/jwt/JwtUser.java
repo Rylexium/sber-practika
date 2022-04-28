@@ -23,7 +23,7 @@ public class JwtUser implements UserDetails {
     private final BigInteger balanceBank;
     private final BigInteger mainCardNumber;
 
-    public JwtUser(BigInteger phone, String password,
+    public JwtUser(String phone, String password,
                    String name, String family, String patronymic,
                    String salt1, String salt2,
                    String email,

@@ -11,7 +11,8 @@ import java.math.BigInteger;
 @Entity
 public class Users {
     @Id
-    private BigInteger id;
+    private String bankNumber;
+    private String username;
     private String password;
     private String salt1;
     private String salt2;
@@ -22,9 +23,10 @@ public class Users {
 
     private String email;
     private String address;
+    private BigInteger phone;
+    private String dateOfBirthday;
     private Status enabled;
 
-    private String bankNumber;
     private BigInteger balanceBank;
     private BigInteger mainCardNumber;
 }

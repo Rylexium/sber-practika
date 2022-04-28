@@ -15,11 +15,23 @@ import java.math.BigInteger;
 @RequiredArgsConstructor
 public class AuthorizationService {
     private final UsersRepository usersRepository;
-    public UserDetails login(BigInteger phone, String password) throws UsernameNotFoundException {
-        Users user = usersRepository.findById(phone).orElse(null);
+    public UserDetails logInByPhone(BigInteger phone, String password) throws UsernameNotFoundException {
+        Users user = usersRepository.findByPhone(phone).orElse(null);
 
         if (user == null)
             throw new UsernameNotFoundException("User with username: " + phone + " not found");
+
+        if(user.getPassword().equals(HashPass.getHashSha256(password, user.getSalt1(), user.getSalt2())))
+            return JwtUserFactory.create(user);
+        else
+            throw new UsernameNotFoundException("Invalid login or password");
+    }
+
+    public UserDetails logInByUsername(String username, String password) throws UsernameNotFoundException {
+        Users user = usersRepository.findByUsername(username).orElse(null);
+
+        if (user == null)
+            throw new UsernameNotFoundException("User with username: " + username + " not found");
 
         if(user.getPassword().equals(HashPass.getHashSha256(password, user.getSalt1(), user.getSalt2())))
             return JwtUserFactory.create(user);
