@@ -35,7 +35,7 @@ public class AuthenticationController {
             UserDetails user = authorizationComponent.logInByPhone( authenticationRequest.getPhone(),
                                                              authenticationRequest.getPassword());
             if (user == null)
-                throw new UsernameNotFoundException("User with username: " + authenticationRequest.getPhone() + " not found");
+                throw new UsernameNotFoundException("User with phone: " + authenticationRequest.getPhone() + " not found");
 
             return ResponseEntity.ok(new HashMap<String, String>() {
                 {
@@ -90,7 +90,7 @@ public class AuthenticationController {
             });
         } catch (Exception e) {
             System.out.println(e.getMessage());
-            return new HashMap<String, String>() {{ put("status", "Invalid username or password");}};
+            return new HashMap<String, String>() {{ put("status", "Invalid bankCard or password");}};
         }
     }
 }
