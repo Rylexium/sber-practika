@@ -17,10 +17,8 @@ public class AuthorizationService {
     private final UsersRepository usersRepository;
 
     public UserDetails logInByPhone(BigInteger phone, String password) throws UsernameNotFoundException {
-        Users user = usersRepository.findByPhone(phone).orElse(null);
-
-        if (user == null)
-            throw new UsernameNotFoundException("User with phone: " + phone + " not found");
+        Users user = usersRepository.findByPhone(phone)
+                .orElseThrow(() -> new UsernameNotFoundException("User with phone: " + phone + " not found"));
 
         if(user.getPassword().equals(HashPass.getHashSha256(password, user.getSalt1(), user.getSalt2())))
             return JwtUserFactory.create(user);
@@ -29,10 +27,8 @@ public class AuthorizationService {
     }
 
     public UserDetails logInByUsername(String username, String password) throws UsernameNotFoundException {
-        Users user = usersRepository.findByUsername(username).orElse(null);
-
-        if (user == null)
-            throw new UsernameNotFoundException("User with username: " + username + " not found");
+        Users user = usersRepository.findByUsername(username)
+                .orElseThrow(() -> new UsernameNotFoundException("User with username: " + username + " not found"));
 
         if(user.getPassword().equals(HashPass.getHashSha256(password, user.getSalt1(), user.getSalt2())))
             return JwtUserFactory.create(user);
@@ -41,10 +37,8 @@ public class AuthorizationService {
     }
 
     public UserDetails logInByBankCard(BigInteger bankCard, String password) throws UsernameNotFoundException {
-        Users user = usersRepository.findByCardNumber(bankCard).orElse(null);
-
-        if (user == null)
-            throw new UsernameNotFoundException("User with bankCard: " + bankCard + " not found");
+        Users user = usersRepository.findByCardNumber(bankCard)
+                .orElseThrow(() -> new UsernameNotFoundException("User with bankCard: " + bankCard + " not found"));
 
         if(user.getPassword().equals(HashPass.getHashSha256(password, user.getSalt1(), user.getSalt2())))
             return JwtUserFactory.create(user);

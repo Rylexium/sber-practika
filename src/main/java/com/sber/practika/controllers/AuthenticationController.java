@@ -1,8 +1,8 @@
 package com.sber.practika.controllers;
 
-import com.sber.practika.models.requests.AuthenticationRequestBankCard;
-import com.sber.practika.models.requests.AuthenticationRequestPhone;
-import com.sber.practika.models.requests.AuthenticationRequestUsername;
+import com.sber.practika.models.requests.authentication.AuthenticationRequestBankCard;
+import com.sber.practika.models.requests.authentication.AuthenticationRequestPhone;
+import com.sber.practika.models.requests.authentication.AuthenticationRequestUsername;
 import com.sber.practika.security.jwt.JwtTokenProvider;
 import com.sber.practika.service.AuthorizationService;
 import lombok.RequiredArgsConstructor;
