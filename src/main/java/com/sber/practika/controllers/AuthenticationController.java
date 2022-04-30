@@ -29,7 +29,7 @@ public class AuthenticationController {
         };
     }
 
-    @RequestMapping(value = "/authentication/phone", method = RequestMethod.POST)
+    @PostMapping(value = "/authentication/phone")
     public Object authenticationPhone(@RequestBody AuthenticationRequestPhone authenticationRequest) {
         try {
             UserDetails user = authorizationComponent.logInByPhone( authenticationRequest.getPhone(),
@@ -50,7 +50,7 @@ public class AuthenticationController {
         }
     }
 
-    @RequestMapping(value = "/authentication/username", method = RequestMethod.POST)
+    @PostMapping(value = "/authentication/username")
     public Object authenticationUsername(@RequestBody AuthenticationRequestUsername authenticationRequest) {
         try {
             UserDetails user = authorizationComponent.logInByUsername(  authenticationRequest.getUsername(),
@@ -72,7 +72,7 @@ public class AuthenticationController {
         }
     }
 
-    @RequestMapping(value = "/authentication/bankCard", method = RequestMethod.POST)
+    @PostMapping(value = "/authentication/bankCard")
     public Object authenticationBankCard(@RequestBody AuthenticationRequestBankCard authenticationRequest) {
         try {
             UserDetails user = authorizationComponent.logInByBankCard(  authenticationRequest.getBankCard(),
