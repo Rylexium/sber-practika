@@ -1,6 +1,5 @@
 package com.sber.practika.controllers;
 
-import com.sber.practika.models.requests.authentication.AuthenticationRequestPhone;
 import com.sber.practika.models.requests.transfer.TransferRequestBankCardToBankCard;
 import com.sber.practika.models.requests.transfer.TransferRequestBankCardToBankNumber;
 import com.sber.practika.models.requests.transfer.TransferRequestBankNumberToBankCard;
@@ -8,7 +7,6 @@ import com.sber.practika.models.requests.transfer.TransferRequestBankNumberToBan
 import com.sber.practika.service.TransferException.TransferBaseException;
 import com.sber.practika.service.TransferService;
 import lombok.RequiredArgsConstructor;
-import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
