@@ -1,4 +1,4 @@
-package com.sber.practika.models;
+package com.sber.practika.models.requests;
 
 import lombok.Data;
 

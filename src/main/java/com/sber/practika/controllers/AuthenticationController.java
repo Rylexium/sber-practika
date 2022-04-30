@@ -1,7 +1,8 @@
 package com.sber.practika.controllers;
 
-import com.sber.practika.models.AuthenticationRequestPhone;
-import com.sber.practika.models.AuthenticationRequestUsername;
+import com.sber.practika.models.requests.AuthenticationRequestBankCard;
+import com.sber.practika.models.requests.AuthenticationRequestPhone;
+import com.sber.practika.models.requests.AuthenticationRequestUsername;
 import com.sber.practika.security.jwt.JwtTokenProvider;
 import com.sber.practika.service.AuthorizationService;
 import lombok.RequiredArgsConstructor;
@@ -68,6 +69,28 @@ public class AuthenticationController {
         } catch (Exception e) {
             System.out.println(e.getMessage());
             return new HashMap<String, String>() {{put("status", "Invalid username or password");}};
+        }
+    }
+
+    @RequestMapping(value = "/authentication/bankCard", method = RequestMethod.POST)
+    public Object authenticationBankCard(@RequestBody AuthenticationRequestBankCard authenticationRequest) {
+        try {
+            UserDetails user = authorizationComponent.logInByBankCard(  authenticationRequest.getBankCard(),
+                    authenticationRequest.getPassword());
+
+            if (user == null)
+                throw new UsernameNotFoundException("User with bankCard: " + authenticationRequest.getBankCard() + " not found");
+
+            return ResponseEntity.ok(new HashMap<String, String>() {
+                {
+                    put("status", "ok");
+                    put("bankCard", String.valueOf(authenticationRequest.getBankCard()));
+                    put("token", jwtTokenProvider.createToken(String.valueOf(authenticationRequest.getBankCard())));
+                }
+            });
+        } catch (Exception e) {
+            System.out.println(e.getMessage());
+            return new HashMap<String, String>() {{ put("status", "Invalid username or password");}};
         }
     }
 }

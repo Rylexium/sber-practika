@@ -19,15 +19,22 @@ public class JwtUserDetailsService implements UserDetailsService {
     @Override
     public UserDetails loadUserByUsername(String param) throws UsernameNotFoundException {
         Users user;
-        try {
+        try { //проверяем по username
             user = usersRepository.findByUsername(param).orElse(null);
             if (user == null)
                 throw new UsernameNotFoundException("User with username: " + param + " not found");
         }catch(Exception e) {
-            if(param.length() != 11) throw new UsernameNotFoundException("Invalid param : " + param);
-            user = usersRepository.findByPhone(new BigInteger(param)).orElse(null);
-            if (user == null)
-                throw new UsernameNotFoundException("User with phone: " + param + " not found");
+            if (param.length() == 11) { // поиск по телефону
+                user = usersRepository.findByPhone(new BigInteger(param)).orElse(null);
+                if (user == null)
+                    throw new UsernameNotFoundException("User with phone: " + param + " not found");
+            }
+            else if(param.length() == 16) { // поиск по банковской карте
+                user = usersRepository.findByCardNumber(new BigInteger(param)).orElse(null);
+                if (user == null)
+                    throw new UsernameNotFoundException("User with bankCard: " + param + " not found");
+            }
+            else throw new UsernameNotFoundException("Invalid param : " + param);
         }
 
         return JwtUserFactory.create(user);

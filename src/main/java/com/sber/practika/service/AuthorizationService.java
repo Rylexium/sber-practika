@@ -15,16 +15,17 @@ import java.math.BigInteger;
 @RequiredArgsConstructor
 public class AuthorizationService {
     private final UsersRepository usersRepository;
+
     public UserDetails logInByPhone(BigInteger phone, String password) throws UsernameNotFoundException {
         Users user = usersRepository.findByPhone(phone).orElse(null);
 
         if (user == null)
-            throw new UsernameNotFoundException("User with username: " + phone + " not found");
+            throw new UsernameNotFoundException("User with phone: " + phone + " not found");
 
         if(user.getPassword().equals(HashPass.getHashSha256(password, user.getSalt1(), user.getSalt2())))
             return JwtUserFactory.create(user);
         else
-            throw new UsernameNotFoundException("Invalid login or password");
+            throw new UsernameNotFoundException("Invalid phone or password");
     }
 
     public UserDetails logInByUsername(String username, String password) throws UsernameNotFoundException {
@@ -36,6 +37,18 @@ public class AuthorizationService {
         if(user.getPassword().equals(HashPass.getHashSha256(password, user.getSalt1(), user.getSalt2())))
             return JwtUserFactory.create(user);
         else
-            throw new UsernameNotFoundException("Invalid login or password");
+            throw new UsernameNotFoundException("Invalid username or password");
+    }
+
+    public UserDetails logInByBankCard(BigInteger bankCard, String password) throws UsernameNotFoundException {
+        Users user = usersRepository.findByCardNumber(bankCard).orElse(null);
+
+        if (user == null)
+            throw new UsernameNotFoundException("User with bankCard: " + bankCard + " not found");
+
+        if(user.getPassword().equals(HashPass.getHashSha256(password, user.getSalt1(), user.getSalt2())))
+            return JwtUserFactory.create(user);
+        else
+            throw new UsernameNotFoundException("Invalid bankCard or password");
     }
 }

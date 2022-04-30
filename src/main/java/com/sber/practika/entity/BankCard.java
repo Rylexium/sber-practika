@@ -12,7 +12,7 @@ import java.math.BigInteger;
 public class BankCard {
     @Id
     private BigInteger id;
-    private BigInteger phoneUser;
+    private BigInteger bankNumber;
     private String date;
     private String name;
     private BigInteger balance;
