@@ -1,4 +1,4 @@
-package com.sber.practika.service.TransferException;
+package com.sber.practika.service.transferService.transferException;
 
 public class BankNumberNotFoundException extends TransferBaseException {
     public BankNumberNotFoundException(String msg, Throwable t) {

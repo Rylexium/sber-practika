@@ -1,4 +1,4 @@
-package com.sber.practika.service.TransferException;
+package com.sber.practika.service.transferService.transferException;
 
 public class InsufficientFundsException extends TransferBaseException {
     public InsufficientFundsException(String msg, Throwable t) {

@@ -1,4 +1,4 @@
-package com.sber.practika.service.TransferException;
+package com.sber.practika.service.transferService.transferException;
 
 import org.springframework.security.core.AuthenticationException;
 

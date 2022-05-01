@@ -1,11 +1,10 @@
-package com.sber.practika.controllers;
+package com.sber.practika.controllers.transfer;
 
 import com.sber.practika.models.requests.transfer.TransferRequestBankCardToBankCard;
 import com.sber.practika.models.requests.transfer.TransferRequestBankCardToBankNumber;
-import com.sber.practika.models.requests.transfer.TransferRequestBankNumberToBankCard;
-import com.sber.practika.models.requests.transfer.TransferRequestBankNumberToBankNumber;
-import com.sber.practika.service.TransferException.TransferBaseException;
-import com.sber.practika.service.TransferService;
+import com.sber.practika.models.requests.transfer.TransferRequestBankCardToPhone;
+import com.sber.practika.service.transferService.transferException.TransferBaseException;
+import com.sber.practika.service.transferService.TransferService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
@@ -17,7 +16,7 @@ import java.util.HashMap;
 @RequiredArgsConstructor
 @RestController
 @RequestMapping("api")
-public class TransferController {
+public class TransferBankCardController {
     private final TransferService transferService;
 
     @PostMapping(value = "/bankCard_to_bankNumber")     // с карты на банк.счёт
@@ -36,23 +35,17 @@ public class TransferController {
                 request.getValue()));
     }
 
-    @PostMapping(value = "/bankNumber_to_bankNumber")    // с банк.счёта на карту
-    public Object bankNumberToBankNumber(@RequestBody TransferRequestBankNumberToBankNumber request) {
-        return wrapper(() -> transferService.bankNumberToBankNumber(
-                request.getBankNumber1(),
-                request.getBankNumber2(),
-                request.getValue()));
-    }
-
-    @PostMapping(value = "/bankNumber_to_bankCard")    // с банк.счёта на банк.счёт
-    public Object bankNumberToBankCard(@RequestBody TransferRequestBankNumberToBankCard request) {
-        return wrapper(() -> transferService.bankNumberToBankCard(
-                request.getBankNumber(),
+    @PostMapping(value = "/bankCard_to_phone")    // с карты на карту
+    public Object bankCardToBankCard(@RequestBody TransferRequestBankCardToPhone request) {
+        return wrapper(() -> transferService.bankCardToPhone(
                 request.getBankCard(),
+                request.getPhone(),
                 request.getValue()));
     }
 
-    private HashMap<String, String> wrapper(Runnable runnable){
+
+
+    public static HashMap<String, String> wrapper(Runnable runnable){
         try {
             runnable.run();
             return new HashMap<String, String>() {
@@ -70,6 +63,4 @@ public class TransferController {
             };
         }
     }
-
-
 }
