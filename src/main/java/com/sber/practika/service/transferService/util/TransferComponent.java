@@ -6,9 +6,9 @@ import com.sber.practika.models.Status;
 import com.sber.practika.repo.BankCardRepository;
 import com.sber.practika.repo.UsersRepository;
 import com.sber.practika.service.transferService.transferException.InsufficientFundsException;
-import com.sber.practika.service.transferService.transferException.bankCard.BankCardExpiredDate;
-import com.sber.practika.service.transferService.transferException.bankNumber.BankNumberDeleted;
-import com.sber.practika.service.transferService.transferException.bankNumber.BankNumberNotActive;
+import com.sber.practika.service.transferService.transferException.bankCardException.BankCardExpiredDate;
+import com.sber.practika.service.transferService.transferException.bankNumberException.BankNumberDeleted;
+import com.sber.practika.service.transferService.transferException.bankNumberException.BankNumberNotActive;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Component;
 
@@ -32,7 +32,7 @@ public class TransferComponent {
             throw new BankNumberNotActive("Банковский счёт : " + user.getBankNumber() + " не активирован");
     }
 
-    private String beautifulInputBankCard(String idCard) {
+    public static String beautifulInputBankCard(String idCard) {
         StringBuilder res = new StringBuilder();
         for (int i = 0; i < idCard.length(); i++){
             res.append(idCard.charAt(i));

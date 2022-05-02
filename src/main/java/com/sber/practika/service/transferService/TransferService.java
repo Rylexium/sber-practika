@@ -4,8 +4,8 @@ import com.sber.practika.entity.BankCard;
 import com.sber.practika.entity.Users;
 import com.sber.practika.repo.BankCardRepository;
 import com.sber.practika.repo.UsersRepository;
-import com.sber.practika.service.transferService.transferException.bankCard.BankCardNotFoundException;
-import com.sber.practika.service.transferService.transferException.bankNumber.BankNumberNotFoundException;
+import com.sber.practika.service.transferService.transferException.bankCardException.BankCardNotFoundException;
+import com.sber.practika.service.transferService.transferException.bankNumberException.BankNumberNotFoundException;
 import com.sber.practika.service.transferService.util.TransferComponent;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
@@ -21,7 +21,7 @@ public class TransferService {
 
     public void bankCardToBankNumber(BigInteger bankCard, String bankNumber, BigInteger value) {
         BankCard card = bankCardRepository.findById(bankCard)
-                .orElseThrow(() -> new BankCardNotFoundException("Карта: " + bankCard + " не найдена"));
+                .orElseThrow(() -> new BankCardNotFoundException("Карта: " + TransferComponent.beautifulInputBankCard(bankCard.toString()) + " не найдена"));
 
         Users user = usersRepository.findById(bankNumber)
                 .orElseThrow(() -> new BankNumberNotFoundException("Банковский счёт: " + bankNumber + " не найден"));
@@ -30,16 +30,16 @@ public class TransferService {
     }
     public void bankCardToBankCard(BigInteger bankCard1, BigInteger bankCard2, BigInteger value) {
         BankCard card1 = bankCardRepository.findById(bankCard1)
-                .orElseThrow(() -> new BankCardNotFoundException("Карта: " + bankCard1 + " не найдена"));
+                .orElseThrow(() -> new BankCardNotFoundException("Карта: " + TransferComponent.beautifulInputBankCard(bankCard1.toString()) + " не найдена"));
 
         BankCard card2 = bankCardRepository.findById(bankCard2)
-                .orElseThrow(() -> new BankCardNotFoundException("Карта: " + bankCard2 + " не найдена"));
+                .orElseThrow(() -> new BankCardNotFoundException("Карта: " + TransferComponent.beautifulInputBankCard(bankCard2.toString()) + " не найдена"));
 
         transferBetween.transferBankCardToBankCard(card1, card2, value);
     }
     public void bankCardToPhone(BigInteger bankCard, BigInteger phone, BigInteger value) {
         BankCard card = bankCardRepository.findById(bankCard)
-                .orElseThrow(() -> new BankCardNotFoundException("Карта: " + bankCard + " не найдена"));
+                .orElseThrow(() -> new BankCardNotFoundException("Карта: " + TransferComponent.beautifulInputBankCard(bankCard.toString()) + " не найдена"));
 
         Users user = usersRepository.findByPhone(phone)
                 .orElseThrow(() -> new BankNumberNotFoundException("Банковский счёт по номеру телефона: " + phone + " не найден"));
@@ -62,7 +62,7 @@ public class TransferService {
                 .orElseThrow(() -> new BankNumberNotFoundException("Банковский счёт: " + bankNumber + " не найден"));
 
         BankCard card = bankCardRepository.findById(bankCard)
-                .orElseThrow(() -> new BankCardNotFoundException("Карта: " + bankCard + " не найдена"));
+                .orElseThrow(() -> new BankCardNotFoundException("Карта: " + TransferComponent.beautifulInputBankCard(bankCard.toString()) + " не найдена"));
 
         transferBetween.transferBankNumberToBankCard(user, card, value);
     }
@@ -91,7 +91,7 @@ public class TransferService {
                 .orElseThrow(() -> new BankNumberNotFoundException("Банковский счёт по номеру телефона: " + phone + " не найден"));
 
         BankCard card = bankCardRepository.findById(bankCard)
-                .orElseThrow(() -> new BankCardNotFoundException("Карта: " + bankCard + " не найдена"));
+                .orElseThrow(() -> new BankCardNotFoundException("Карта: " + TransferComponent.beautifulInputBankCard(bankCard.toString()) + " не найдена"));
 
         transferBetween.transferBankCardToBankNumber(card, user, value);
     }

@@ -1,4 +1,4 @@
-package com.sber.practika.service.transferService.transferException.bankNumber;
+package com.sber.practika.service.transferService.transferException.bankNumberException;
 
 import com.sber.practika.service.transferService.transferException.TransferBaseException;
 
