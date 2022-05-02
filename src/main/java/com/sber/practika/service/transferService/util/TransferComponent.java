@@ -46,9 +46,9 @@ public class TransferComponent {
     }
     private void checkStatusCard(BankCard card) {
         if(card.getEnabled() == Status.DELETED)
-            throw new BankNumberDeleted("Карта : " + card.getId() + " не существует");
+            throw new BankNumberDeleted("Карта : " + beautifulInputBankCard(card.getId().toString()) + "не существует");
         else if(card.getEnabled() == Status.NOT_ACTIVE)
-            throw new BankNumberNotActive("Карта : " + card.getId() + " не активирован");
+            throw new BankNumberNotActive("Карта : " + beautifulInputBankCard(card.getId().toString()) + " не активирован");
     }
     private void isValidData(BankCard card) {
         // 05 22 - now
