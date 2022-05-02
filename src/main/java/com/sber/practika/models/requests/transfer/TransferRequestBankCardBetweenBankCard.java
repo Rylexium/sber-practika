@@ -5,8 +5,8 @@ import lombok.Data;
 import java.math.BigInteger;
 
 @Data
-public class TransferRequestPhoneToPhone {
-    private BigInteger phone1;
-    private BigInteger phone2;
+public class TransferRequestBankCardBetweenBankCard {
+    private BigInteger bankCard1;
+    private BigInteger bankCard2;
     private BigInteger value;
 }

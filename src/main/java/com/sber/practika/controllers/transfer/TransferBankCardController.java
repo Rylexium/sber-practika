@@ -1,8 +1,8 @@
 package com.sber.practika.controllers.transfer;
 
-import com.sber.practika.models.requests.transfer.TransferRequestBankCardToBankCard;
-import com.sber.practika.models.requests.transfer.TransferRequestBankCardToBankNumber;
-import com.sber.practika.models.requests.transfer.TransferRequestBankCardToPhone;
+import com.sber.practika.models.requests.transfer.TransferRequestBankCardBetweenBankCard;
+import com.sber.practika.models.requests.transfer.TransferRequestBankCardBetweenBankNumber;
+import com.sber.practika.models.requests.transfer.TransferRequestBankCardBetweenPhone;
 import com.sber.practika.service.transferService.transferException.TransferBaseException;
 import com.sber.practika.service.transferService.TransferService;
 import lombok.RequiredArgsConstructor;
@@ -20,7 +20,7 @@ public class TransferBankCardController {
     private final TransferService transferService;
 
     @PostMapping(value = "/bankCard_to_bankNumber")     // с карты на банк.счёт
-    public Object bankCardToBankNumber(@RequestBody TransferRequestBankCardToBankNumber request) {
+    public Object bankCardToBankNumber(@RequestBody TransferRequestBankCardBetweenBankNumber request) {
         return wrapper(() -> transferService.bankCardToBankNumber(
                 request.getBankCard(),
                 request.getBankNumber(),
@@ -28,7 +28,7 @@ public class TransferBankCardController {
     }
 
     @PostMapping(value = "/bankCard_to_bankCard")    // с карты на карту
-    public Object bankCardToBankCard(@RequestBody TransferRequestBankCardToBankCard request) {
+    public Object bankCardToBankCard(@RequestBody TransferRequestBankCardBetweenBankCard request) {
         return wrapper(() -> transferService.bankCardToBankCard(
                 request.getBankCard1(),
                 request.getBankCard2(),
@@ -36,7 +36,7 @@ public class TransferBankCardController {
     }
 
     @PostMapping(value = "/bankCard_to_phone")    // с карты на карту
-    public Object bankCardToBankCard(@RequestBody TransferRequestBankCardToPhone request) {
+    public Object bankCardToBankCard(@RequestBody TransferRequestBankCardBetweenPhone request) {
         return wrapper(() -> transferService.bankCardToPhone(
                 request.getBankCard(),
                 request.getPhone(),
