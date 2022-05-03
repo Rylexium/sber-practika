@@ -8,6 +8,7 @@ import com.sber.practika.service.transferService.transferException.NegativeTrans
 import com.sber.practika.service.transferService.transferException.bankCardException.BankCardNotFoundException;
 import com.sber.practika.service.transferService.transferException.bankCardException.BankCardsEqualsException;
 import com.sber.practika.service.transferService.transferException.bankNumberException.BankNumberNotFoundException;
+import com.sber.practika.service.transferService.transferException.bankNumberException.BankNumbersEqualsException;
 import com.sber.practika.service.transferService.util.TransferComponent;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
@@ -64,6 +65,9 @@ public class TransferService {
     public void bankNumberToBankNumber(String bankNumber1, String bankNumber2, BigInteger value) {
         isPositiveValue(value);
 
+        if(bankNumber1.equals(bankNumber2))
+            throw new BankCardsEqualsException("Банковские счета одинаковые");
+
         Users user1 = usersRepository.findById(bankNumber1)
                 .orElseThrow(() -> new BankNumberNotFoundException("Банковский счёт: " + bankNumber1 + " не найден"));
 
@@ -88,6 +92,9 @@ public class TransferService {
 
         Users user1 = usersRepository.findById(bankNumber)
                 .orElseThrow(() -> new BankNumberNotFoundException("Банковский счёт: " + bankNumber + " не найден"));
+
+        if(user1.getPhone().equals(phone))
+            throw new BankNumbersEqualsException("Одинаковые банковские счета");
 
         Users user2 = usersRepository.findByPhone(phone)
                 .orElseThrow(() -> new BankNumberNotFoundException("Банковский счёт по номеру телефона: " + phone + " не найден"));

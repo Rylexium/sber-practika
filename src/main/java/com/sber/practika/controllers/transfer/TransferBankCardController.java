@@ -51,7 +51,7 @@ public class TransferBankCardController {
             return new HashMap<String, String>() {
                 {
                     put("status", "ok");
-                    put("message", "successful");
+                    put("message", "Успешно переведено");
                 }
             };
         } catch (TransferBaseException e){

@@ -69,11 +69,9 @@ public class ConnectToUrl {
             JSONObject answer = new JSONObject(response.body());
             return answer.get("token").toString();
 
-        } catch (JSONException | URISyntaxException | InterruptedException e) {
+        } catch (JSONException | URISyntaxException | InterruptedException | IOException e) {
             e.printStackTrace();
             System.out.println(e.getMessage());
-        } catch (IOException e) {
-            e.printStackTrace();
         }
         return null;
     }
