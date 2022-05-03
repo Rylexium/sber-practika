@@ -13,7 +13,7 @@ import static com.sber.practika.util.ConnectToUrl.authentication;
 
 class AuthenticationControllerTest {
     @Test
-    void authenticationByPhoneTest() {
+    void testAuthenticationByPhone() {
         System.out.println("===========================================");
         try {
             List<JSONObject> data = new ArrayList<>();
@@ -48,7 +48,7 @@ class AuthenticationControllerTest {
     }
 
     @Test
-    void authenticationByUsernameTest() {
+    void testAuthenticationByUsername() {
         System.out.println("===========================================");
         try {
             List<JSONObject> data = new ArrayList<>();
@@ -83,7 +83,7 @@ class AuthenticationControllerTest {
     }
 
     @Test
-    void authenticationByBankCardTest() {
+    void testAuthenticationByBankCard() {
         System.out.println("===========================================");
         try {
             List<JSONObject> data = new ArrayList<>();
