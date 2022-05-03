@@ -2,12 +2,12 @@ package com.sber.practika.service.transferService.transferException.bankCardExce
 
 import com.sber.practika.service.transferService.transferException.TransferBaseException;
 
-public class BankCardNotActive extends TransferBaseException {
-    public BankCardNotActive(String msg, Throwable t) {
+public class BankCardsEqualsException extends TransferBaseException {
+    public BankCardsEqualsException(String msg, Throwable t) {
         super(msg, t);
     }
 
-    public BankCardNotActive(String msg) {
+    public BankCardsEqualsException(String msg) {
         super(msg);
     }
 }

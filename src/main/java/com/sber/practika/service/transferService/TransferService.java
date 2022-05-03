@@ -4,8 +4,9 @@ import com.sber.practika.entity.BankCard;
 import com.sber.practika.entity.Users;
 import com.sber.practika.repo.BankCardRepository;
 import com.sber.practika.repo.UsersRepository;
-import com.sber.practika.service.transferService.transferException.NegativeTransferValue;
+import com.sber.practika.service.transferService.transferException.NegativeTransferValueException;
 import com.sber.practika.service.transferService.transferException.bankCardException.BankCardNotFoundException;
+import com.sber.practika.service.transferService.transferException.bankCardException.BankCardsEqualsException;
 import com.sber.practika.service.transferService.transferException.bankNumberException.BankNumberNotFoundException;
 import com.sber.practika.service.transferService.util.TransferComponent;
 import lombok.RequiredArgsConstructor;
@@ -33,12 +34,16 @@ public class TransferService {
     }
     public void bankCardToBankCard(BigInteger bankCard1, BigInteger bankCard2, BigInteger value) {
         isPositiveValue(value);
+        if(bankCard1.equals(bankCard2))
+            throw new BankCardsEqualsException("Номера карт одинаковые");
 
         BankCard card1 = bankCardRepository.findById(bankCard1)
-                .orElseThrow(() -> new BankCardNotFoundException("Карта: " + TransferComponent.beautifulInputBankCard(bankCard1.toString()) + " не найдена"));
+                .orElseThrow(() -> new BankCardNotFoundException("Карта: " +
+                        TransferComponent.beautifulInputBankCard(bankCard1.toString()) + " не найдена"));
 
         BankCard card2 = bankCardRepository.findById(bankCard2)
-                .orElseThrow(() -> new BankCardNotFoundException("Карта: " + TransferComponent.beautifulInputBankCard(bankCard2.toString()) + " не найдена"));
+                .orElseThrow(() -> new BankCardNotFoundException("Карта: " +
+                        TransferComponent.beautifulInputBankCard(bankCard2.toString()) + " не найдена"));
 
         transferBetween.transferBankCardToBankCard(card1, card2, value);
     }
@@ -46,7 +51,8 @@ public class TransferService {
         isPositiveValue(value);
 
         BankCard card = bankCardRepository.findById(bankCard)
-                .orElseThrow(() -> new BankCardNotFoundException("Карта: " + TransferComponent.beautifulInputBankCard(bankCard.toString()) + " не найдена"));
+                .orElseThrow(() -> new BankCardNotFoundException("Карта: " +
+                        TransferComponent.beautifulInputBankCard(bankCard.toString()) + " не найдена"));
 
         Users user = usersRepository.findByPhone(phone)
                 .orElseThrow(() -> new BankNumberNotFoundException("Банковский счёт по номеру телефона: " + phone + " не найден"));
@@ -126,7 +132,7 @@ public class TransferService {
 
     public static void isPositiveValue(BigInteger value) {
         if(value.signum() != 1)
-            throw new NegativeTransferValue("Сумма перевода должна быть положительной");
+            throw new NegativeTransferValueException("Сумма перевода должна быть положительной");
     }
 
 }

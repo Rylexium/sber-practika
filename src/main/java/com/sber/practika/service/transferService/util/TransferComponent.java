@@ -6,9 +6,9 @@ import com.sber.practika.models.Status;
 import com.sber.practika.repo.BankCardRepository;
 import com.sber.practika.repo.UsersRepository;
 import com.sber.practika.service.transferService.transferException.InsufficientFundsException;
-import com.sber.practika.service.transferService.transferException.bankCardException.BankCardExpiredDate;
-import com.sber.practika.service.transferService.transferException.bankNumberException.BankNumberDeleted;
-import com.sber.practika.service.transferService.transferException.bankNumberException.BankNumberNotActive;
+import com.sber.practika.service.transferService.transferException.bankCardException.BankCardExpiredDateException;
+import com.sber.practika.service.transferService.transferException.bankNumberException.BankNumberDeletedException;
+import com.sber.practika.service.transferService.transferException.bankNumberException.BankNumberNotActiveException;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Component;
 
@@ -27,9 +27,9 @@ public class TransferComponent {
 
     private void checkStatusUser(Users user){
         if(user.getEnabled() == Status.DELETED)
-            throw new BankNumberDeleted("Банковского счёта : " + user.getBankNumber() + " не существует");
+            throw new BankNumberDeletedException("Банковского счёта : " + user.getBankNumber() + " не существует");
         else if(user.getEnabled() == Status.NOT_ACTIVE)
-            throw new BankNumberNotActive("Банковский счёт : " + user.getBankNumber() + " не активирован");
+            throw new BankNumberNotActiveException("Банковский счёт : " + user.getBankNumber() + " не активирован");
     }
 
     public static String beautifulInputBankCard(String idCard) {
@@ -46,9 +46,9 @@ public class TransferComponent {
     }
     private void checkStatusCard(BankCard card) {
         if(card.getEnabled() == Status.DELETED)
-            throw new BankNumberDeleted("Карта : " + beautifulInputBankCard(card.getId().toString()) + "не существует");
+            throw new BankNumberDeletedException("Карта : " + beautifulInputBankCard(card.getId().toString()) + "не существует");
         else if(card.getEnabled() == Status.NOT_ACTIVE)
-            throw new BankNumberNotActive("Карта : " + beautifulInputBankCard(card.getId().toString()) + " не активирован");
+            throw new BankNumberNotActiveException("Карта : " + beautifulInputBankCard(card.getId().toString()) + " не активирован");
     }
     private void isValidData(BankCard card) {
         // 05 22 - now
@@ -68,7 +68,7 @@ public class TransferComponent {
         if( (nowDate.get(1) > cardDate.get(1)) // текущий год больше, чем год карты
                 ||
                 (nowDate.get(1).equals(cardDate.get(1)) && nowDate.get(0) > cardDate.get(0)))
-            throw new BankCardExpiredDate("Срок карты : " + beautifulInputBankCard(card.getId().toString()) + "истёк");
+            throw new BankCardExpiredDateException("Срок карты : " + beautifulInputBankCard(card.getId().toString()) + "истёк");
     }
 
     public void transferBankNumberToBankNumber(Users user1, Users user2, BigInteger value) {

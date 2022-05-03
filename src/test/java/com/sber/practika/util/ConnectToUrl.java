@@ -36,7 +36,8 @@ public class ConnectToUrl {
         try {
             URI url = new URI("http://localhost:8080/api/" + method);
             var client = HttpClient.newHttpClient();
-            var request = HttpRequest.newBuilder(url).POST(HttpRequest.BodyPublishers.ofString(String.valueOf(json)))
+            var request = HttpRequest.newBuilder(url)
+                    .POST(HttpRequest.BodyPublishers.ofString(String.valueOf(json)))
                     .header("Content-type", "application/json")
                     .header("Authorization", "Bearer " + jwt)
                     .build();

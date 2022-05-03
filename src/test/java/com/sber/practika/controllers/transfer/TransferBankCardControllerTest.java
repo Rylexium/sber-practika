@@ -3,6 +3,7 @@ package com.sber.practika.controllers.transfer;
 import org.json.JSONException;
 import org.json.JSONObject;
 import org.junit.jupiter.api.Test;
+import org.springframework.util.Assert;
 
 import java.io.IOException;
 import java.util.ArrayList;
@@ -15,10 +16,8 @@ import static org.junit.jupiter.api.Assertions.*;
 class TransferBankCardControllerTest {
 
     @Test
-    void testBankCardToBankNumber() {
-        System.out.println("===========================================");
-        try {
-            List<JSONObject> data = new ArrayList<>();
+    void testBankCardToBankNumber() throws JSONException, IOException {
+        System.out.println("\ntestBankCardToBankNumber\n===========================================");
 
             //{
             //    "bankNumber" : "18649937255896693161",
@@ -26,38 +25,106 @@ class TransferBankCardControllerTest {
             //    "value" : 100
             //}
 
-            data.add(new JSONObject()
-                    .put("bankNumber", "18649937255896693161") //true
-                    .put("bankCard", "5234234343124321")
-                    .put("value", "100"));
-            data.add(new JSONObject()
-                    .put("bankNumber", "18649937255896693161") //true
-                    .put("bankCard", "5234234343124321")
-                    .put("value", "-100"));
-            data.add(new JSONObject()
-                    .put("bankNumber", "18649937255896693161") //true
-                    .put("bankCard", "5234234343124321")
-                    .put("value", "100"));
-            data.add(new JSONObject()
-                    .put("bankNumber", "18649937255896693161") //true
-                    .put("bankCard", "5234234343124321")
-                    .put("value", "100"));
-            System.out.println("JWT : " + getJWT());
-            for(int i=0; i<data.size(); i++){
-                transfer(getJWT(),"bankNumber_to_bankCard", data.get(i));
-            }
-        } catch (JSONException | IOException e) {
-            e.printStackTrace();
-        }
+            Assert.isTrue(transfer(getJWT(),
+                    "bankNumber_to_bankCard",
+                    new JSONObject()
+                        .put("bankNumber", "18649937255896693161")
+                        .put("bankCard", "5234234343124321")
+                        .put("value", "100")),"Успешный перевод");
+            Assert.isTrue(!transfer(getJWT(),
+                        "bankNumber_to_bankCard",
+                        new JSONObject()
+                            .put("bankNumber", "18649937255896693161")
+                            .put("bankCard", "5234234343124321")
+                            .put("value", "-100")), "Отрицательное число");
+            Assert.isTrue(transfer(getJWT(),
+                        "bankNumber_to_bankCard",
+                        new JSONObject()
+                            .put("bankNumber", "18649937255896693161")
+                            .put("bankCard", "8787314829830131")
+                            .put("value", "100")), "Нехватка средств на карте");
+            Assert.isTrue(!transfer(getJWT(),
+                        "bankNumber_to_bankCard",
+                        new JSONObject()
+                            .put("bankNumber", "18649937255896693161")
+                            .put("bankCard", "4752154192152587")
+                            .put("value", "100")), "Срок карты");
+            Assert.isTrue(!transfer(getJWT(),
+                        "bankNumber_to_bankCard",
+                        new JSONObject()
+                            .put("bankNumber", "18649937255896693161")
+                            .put("bankCard", "1234123412341234")
+                            .put("value", "100")), "Не наход карты");
+            Assert.isTrue(!transfer(getJWT(),
+                        "bankNumber_to_bankCard",
+                        new JSONObject()
+                            .put("bankNumber", "18649937255896693162")
+                            .put("bankCard", "5234234343124321")
+                            .put("value", "100")), "Не наход счёта");
+            Assert.isTrue(!transfer(getJWT(),
+                    "bankNumber_to_bankCard",
+                            new JSONObject()
+                                .put("bankNumber", "18649937255896693161")
+                                .put("bankCard", "7722702991638932")
+                                .put("value", "100")), "Статус карты");
+            Assert.isTrue(!transfer(getJWT(),
+                        "bankNumber_to_bankCard",
+                        new JSONObject()
+                            .put("bankNumber", "18649937255896693169")
+                            .put("bankCard", "5234234343124321")
+                            .put("value", "100")), "Статус счёта");
     }
 
     @Test
-    void testBankCardToBankCard() {
-        System.out.println("===========================================");
+    void testBankCardToBankCard() throws JSONException, IOException {
+        System.out.println("\ntestBankCardToBankCard\n===========================================");
+
+        //{
+        //    "bankCard1" : 1457345448336542,
+        //    "bankCard2" : 7302903045234380,
+        //    "value" : 1
+        //}
+        Assert.isTrue(transfer(getJWT(),
+                "bankCard_to_bankCard",
+                new JSONObject()
+                        .put("bankCard1", "1457345448336542")
+                        .put("bankCard2", "7302903045234380")
+                        .put("value", "1")), "Успешный перевод");
+        Assert.isTrue(transfer(getJWT(),
+                "bankCard_to_bankCard",
+                new JSONObject()
+                        .put("bankCard1", "1457345448336542")
+                        .put("bankCard2", "7302903045234380")
+                        .put("value", "1")), "Отрицательное число");
+        Assert.isTrue(!transfer(getJWT(),
+                "bankCard_to_bankCard",
+                new JSONObject()
+                        .put("bankCard1", "1457345448336542")
+                        .put("bankCard2", "1457345448336542")
+                        .put("value", "1")), "Одинаковые карты");
     }
 
     @Test
-    void testBankCardToPhone() {
-        System.out.println("===========================================");
+    void testBankCardToPhone() throws JSONException, IOException {
+        System.out.println("\ntestBankCardToPhone\n===========================================");
+        Assert.isTrue(transfer(getJWT(),
+                "bankCard_to_phone",
+                new JSONObject()
+                        .put("bankCard", "1457345448336542")
+                        .put("phone", "89371727345")
+                        .put("value", "1")), "Успешный перевод");
+        Assert.isTrue(!transfer(getJWT(),
+                "bankCard_to_phone",
+                new JSONObject()
+                        .put("bankCard", "1457345448336542")
+                        .put("phone", "89371727345")
+                        .put("value", "-1")), "Отрицательное число");
+        Assert.isTrue(!transfer(getJWT(),
+                "bankCard_to_phone",
+                new JSONObject()
+                        .put("bankCard", "1457345448336542")
+                        .put("phone", "89371727346")
+                        .put("value", "1")), "Не наход банковский счёт по телефону");
+
     }
 }

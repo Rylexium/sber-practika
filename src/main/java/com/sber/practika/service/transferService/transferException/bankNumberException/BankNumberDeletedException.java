@@ -2,12 +2,12 @@ package com.sber.practika.service.transferService.transferException.bankNumberEx
 
 import com.sber.practika.service.transferService.transferException.TransferBaseException;
 
-public class BankNumberNotActive extends TransferBaseException {
-    public BankNumberNotActive(String msg, Throwable t) {
+public class BankNumberDeletedException extends TransferBaseException {
+    public BankNumberDeletedException(String msg, Throwable t) {
         super(msg, t);
     }
 
-    public BankNumberNotActive(String msg) {
+    public BankNumberDeletedException(String msg) {
         super(msg);
     }
 }

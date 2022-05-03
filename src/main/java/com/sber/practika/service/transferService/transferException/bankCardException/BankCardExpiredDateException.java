@@ -2,12 +2,12 @@ package com.sber.practika.service.transferService.transferException.bankCardExce
 
 import com.sber.practika.service.transferService.transferException.TransferBaseException;
 
-public class BankCardDeleted extends TransferBaseException {
-    public BankCardDeleted(String msg, Throwable t) {
+public class BankCardExpiredDateException extends TransferBaseException {
+    public BankCardExpiredDateException(String msg, Throwable t) {
         super(msg, t);
     }
 
-    public BankCardDeleted(String msg) {
+    public BankCardExpiredDateException(String msg) {
         super(msg);
     }
 }
