@@ -30,7 +30,7 @@ public class AuthenticationController {
     }
 
     @PostMapping(value = "/authentication/phone")
-    public Object authenticationPhone(@RequestBody AuthenticationRequestPhone authenticationRequest) {
+    public Object authenticationByPhone(@RequestBody AuthenticationRequestPhone authenticationRequest) {
         try {
             UserDetails user = authorizationComponent.logInByPhone( authenticationRequest.getPhone(),
                                                              authenticationRequest.getPassword());
@@ -51,7 +51,7 @@ public class AuthenticationController {
     }
 
     @PostMapping(value = "/authentication/username")
-    public Object authenticationUsername(@RequestBody AuthenticationRequestUsername authenticationRequest) {
+    public Object authenticationByUsername(@RequestBody AuthenticationRequestUsername authenticationRequest) {
         try {
             UserDetails user = authorizationComponent.logInByUsername(  authenticationRequest.getUsername(),
                                                                         authenticationRequest.getPassword());
@@ -73,7 +73,7 @@ public class AuthenticationController {
     }
 
     @PostMapping(value = "/authentication/bankCard")
-    public Object authenticationBankCard(@RequestBody AuthenticationRequestBankCard authenticationRequest) {
+    public Object authenticationByBankCard(@RequestBody AuthenticationRequestBankCard authenticationRequest) {
         try {
             UserDetails user = authorizationComponent.logInByBankCard(  authenticationRequest.getBankCard(),
                     authenticationRequest.getPassword());

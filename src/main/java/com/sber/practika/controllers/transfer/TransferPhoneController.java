@@ -25,7 +25,7 @@ public class TransferPhoneController {
     }
 
     @PostMapping(value = "/phone_to_bankCard")    // с карты на карту
-    public Object bankCardToBankCard(@RequestBody TransferRequestBankCardBetweenPhone request) {
+    public Object phoneToBankCard(@RequestBody TransferRequestBankCardBetweenPhone request) {
         return wrapper(() -> transferService.phoneToBankCard(
                 request.getPhone(),
                 request.getBankCard(),
@@ -33,7 +33,7 @@ public class TransferPhoneController {
     }
 
     @PostMapping(value = "/phone_to_phone")    // с карты на карту
-    public Object bankCardToBankCard(@RequestBody TransferRequestPhoneBetweenPhone request) {
+    public Object phoneToPhone(@RequestBody TransferRequestPhoneBetweenPhone request) {
         return wrapper(() -> transferService.phoneToPhone(
                 request.getPhone1(),
                 request.getPhone2(),
