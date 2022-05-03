@@ -90,19 +90,19 @@ class TransferBankCardControllerTest {
                         .put("bankCard1", "1457345448336542")
                         .put("bankCard2", "7302903045234380")
                         .put("value", "1")), "Успешный перевод");
-        Assert.isTrue(transfer(getJWT(),
+        Assert.isTrue(!transfer(getJWT(),
                 "bankCard_to_bankCard",
                 new JSONObject()
                         .put("bankCard1", "1457345448336542")
                         .put("bankCard2", "7302903045234380")
-                        .put("value", "1")), "Отрицательное число");
-        Assert.isTrue(transfer(getJWT(),
+                        .put("value", "-10")), "Отрицательное число");
+        Assert.isTrue(!transfer(getJWT(),
                 "bankCard_to_bankCard",
                 new JSONObject()
                         .put("bankCard1", "1457345448336541")
                         .put("bankCard2", "7302903045234380")
                         .put("value", "1")), "Не наход банковской карты1");
-        Assert.isTrue(transfer(getJWT(),
+        Assert.isTrue(!transfer(getJWT(),
                 "bankCard_to_bankCard",
                 new JSONObject()
                         .put("bankCard1", "1457345448336542")

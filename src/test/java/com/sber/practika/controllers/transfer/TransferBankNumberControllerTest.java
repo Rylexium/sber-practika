@@ -75,25 +75,25 @@ class TransferBankNumberControllerTest {
                         .put("bankNumber", "18649937255896693161")
                         .put("bankCard", "5234234343124321")
                         .put("value", "100")),"Успешный перевод");
-        Assert.isTrue(transfer(getJWT(),
+        Assert.isTrue(!transfer(getJWT(),
                 "bankNumber_to_bankCard",
                 new JSONObject()
                         .put("bankNumber", "18649937255896693161")
                         .put("bankCard", "5234234343124321")
                         .put("value", "100000")),"Недостаточно средств");
-        Assert.isTrue(transfer(getJWT(),
+        Assert.isTrue(!transfer(getJWT(),
                 "bankNumber_to_bankCard",
                 new JSONObject()
                         .put("bankNumber", "18649937255896693161")
                         .put("bankCard", "5234234343124321")
                         .put("value", "-1")),"Отрицательная сумма");
-        Assert.isTrue(transfer(getJWT(),
+        Assert.isTrue(!transfer(getJWT(),
                 "bankNumber_to_bankCard",
                 new JSONObject()
                         .put("bankNumber", "18649937255896693161")
                         .put("bankCard", "1234123412341234")
                         .put("value", "5")),"Банковской карты нет");
-        Assert.isTrue(transfer(getJWT(),
+        Assert.isTrue(!transfer(getJWT(),
                 "bankNumber_to_bankCard",
                 new JSONObject()
                         .put("bankNumber", "18649937255896693160")
