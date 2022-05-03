@@ -37,12 +37,12 @@ class TransferBankCardControllerTest {
                             .put("bankNumber", "18649937255896693161")
                             .put("bankCard", "5234234343124321")
                             .put("value", "-100")), "Отрицательное число");
-            Assert.isTrue(transfer(getJWT(),
+            Assert.isTrue(!transfer(getJWT(),
                         "bankNumber_to_bankCard",
                         new JSONObject()
                             .put("bankNumber", "18649937255896693161")
                             .put("bankCard", "8787314829830131")
-                            .put("value", "100")), "Нехватка средств на карте");
+                            .put("value", "10000000")), "Нехватка средств на карте");
             Assert.isTrue(!transfer(getJWT(),
                         "bankNumber_to_bankCard",
                         new JSONObject()

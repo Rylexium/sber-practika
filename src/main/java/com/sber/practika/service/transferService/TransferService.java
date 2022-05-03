@@ -109,6 +109,9 @@ public class TransferService {
         Users user1 = usersRepository.findByPhone(phone)
                 .orElseThrow(() -> new BankNumberNotFoundException("Банковский счёт по номеру телефона: " + phone + " не найден"));
 
+        if(user1.getBankNumber().equals(bankNumber))
+            throw new BankNumbersEqualsException("Одинаковые банковские счёта");
+
         Users user2 = usersRepository.findById(bankNumber)
                 .orElseThrow(() -> new BankNumberNotFoundException("Банковский счёт: " + bankNumber + " не найден"));
 
@@ -127,6 +130,9 @@ public class TransferService {
     }
     public void phoneToPhone(BigInteger phone1, BigInteger phone2, BigInteger value) {
         isPositiveValue(value);
+
+        if(phone1.equals(phone2))
+            throw new BankNumbersEqualsException("Одинаковые банковские счета");
 
         Users user1 = usersRepository.findByPhone(phone1)
                 .orElseThrow(() -> new BankNumberNotFoundException("Банковский счёт по номеру телефона: " + phone1 + " не найден"));
