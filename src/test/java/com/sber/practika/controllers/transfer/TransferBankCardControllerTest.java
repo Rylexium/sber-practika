@@ -136,7 +136,7 @@ class TransferBankCardControllerTest {
                 new JSONObject()
                         .put("bankCard", "1457345448336541")
                         .put("phone", "89371727345")
-                        .put("value", "-1")), "Не наход банковской карты");
+                        .put("value", "1")), "Не наход банковской карты");
         Assert.isTrue(!transfer(getJWT(),
                 "bankCard_to_phone",
                 new JSONObject()
