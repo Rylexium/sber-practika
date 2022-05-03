@@ -33,7 +33,7 @@ class AuthenticationControllerTest {
 
             for(int i=0; i < data.size(); i++) {
                 try {
-                    System.out.println("test " + (i+1) + " in authenticationByUsernameTest");
+                    System.out.println("test " + (i+1) + " in testAuthenticationByPhone");
                     if (i % 2 == 0)
                         Assert.isTrue(authentication("phone", data.get(i)));
                     else
@@ -68,7 +68,7 @@ class AuthenticationControllerTest {
 
             for(int i=0; i < data.size(); i++) {
                 try {
-                    System.out.println("test " + (i+1) + " in authenticationByUsernameTest");
+                    System.out.println("test " + (i+1) + " in testAuthenticationByUsername");
                     if (i % 2 == 0)
                         Assert.isTrue(authentication("username", data.get(i)));
                     else
@@ -103,7 +103,7 @@ class AuthenticationControllerTest {
 
             for (int i = 0; i < data.size(); i++) {
                 try {
-                    System.out.println("test " + (i + 1) + " in authenticationByBankCardTest");
+                    System.out.println("test " + (i + 1) + " in testAuthenticationByBankCard");
                     if (i % 2 == 0)
                         Assert.isTrue(authentication("bankCard", data.get(i)));
                     else
