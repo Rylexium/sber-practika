@@ -35,41 +35,6 @@ public class EmailSenderService {
                         + TransferComponent.beautifulInputBankCard(bankCard.toString()) + " нет")));
     }
 
-
-    public boolean isTrueConfirmCodeByUsername(String username, Integer code) {
-        Users user =  usersRepository.findByUsername(username)
-                .orElseThrow(() -> new UserNotFoundException("Пользователя с таким username : " + username + " нет"));
-        if(user.getConfirmCode() != null && user.getConfirmCode().equals(code)){
-            user.setConfirmCode(null);
-            usersRepository.save(user);
-            return true;
-        }
-        return false;
-    }
-
-    public boolean isTrueConfirmCodeByPhone(BigInteger phone, Integer code) {
-        Users user = usersRepository.findByPhone(phone)
-                .orElseThrow(() -> new UserNotFoundException("Пользователя с таким phone : " + phone + " нет"));
-        if(user.getConfirmCode() != null && user.getConfirmCode().equals(code)){
-            user.setConfirmCode(null);
-            usersRepository.save(user);
-            return true;
-        }
-        return false;
-    }
-
-    public boolean isTrueConfirmCodeByBankCard(BigInteger bankCard, Integer code) {
-        Users user = usersRepository.findByCardNumber(bankCard)
-                .orElseThrow(() -> new UserNotFoundException("Пользователя с такой банковской картой : "
-                        + TransferComponent.beautifulInputBankCard(bankCard.toString()) + " нет"));
-        if(user.getConfirmCode() != null && user.getConfirmCode().equals(code)){
-            user.setConfirmCode(null);
-            usersRepository.save(user);
-            return true;
-        }
-        return false;
-    }
-
     private void sendEmail(Users user) {
         if(user.getEmail() == null)
             throw new EmailNotFoundException("Электронный почты у пользователя " + user.getBankNumber() + " нет");

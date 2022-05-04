@@ -4,7 +4,7 @@ import com.sber.practika.models.requests.authentication.AuthenticationRequestBan
 import com.sber.practika.models.requests.authentication.AuthenticationRequestPhone;
 import com.sber.practika.models.requests.authentication.AuthenticationRequestUsername;
 import com.sber.practika.security.jwt.JwtTokenProvider;
-import com.sber.practika.service.AuthorizationService;
+import com.sber.practika.service.authorizationService.AuthorizationService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.userdetails.UserDetails;
@@ -46,7 +46,7 @@ public class AuthenticationController {
             });
         } catch (Exception e) {
             System.out.println(e.getMessage());
-            return new HashMap<String, String>() {{put("status", "Invalid username or password");}};
+            return error();
         }
     }
 
@@ -68,7 +68,7 @@ public class AuthenticationController {
             });
         } catch (Exception e) {
             System.out.println(e.getMessage());
-            return new HashMap<String, String>() {{put("status", "Invalid username or password");}};
+            return error();
         }
     }
 
@@ -90,7 +90,9 @@ public class AuthenticationController {
             });
         } catch (Exception e) {
             System.out.println(e.getMessage());
-            return new HashMap<String, String>() {{ put("status", "Invalid bankCard or password");}};
+            return error();
         }
     }
+
+    private HashMap<String, String> error() { return new HashMap<String, String>() {{ put("status", "Invalid bankCard or password");}}; }
 }

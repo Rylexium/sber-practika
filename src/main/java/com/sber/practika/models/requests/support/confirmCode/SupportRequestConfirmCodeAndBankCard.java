@@ -1,4 +1,4 @@
-package com.sber.practika.models.requests.support;
+package com.sber.practika.models.requests.support.confirmCode;
 
 import lombok.Data;
 
