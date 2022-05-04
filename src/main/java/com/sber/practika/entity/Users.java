@@ -29,4 +29,5 @@ public class Users {
 
     private BigInteger balanceBank;
     private BigInteger mainCardNumber;
+    private Integer confirmCode;
 }

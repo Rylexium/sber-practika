@@ -1,13 +1,14 @@
-package com.sber.practika.service;
+package com.sber.practika.service.emailService.util;
 
 import lombok.RequiredArgsConstructor;
 import org.springframework.mail.SimpleMailMessage;
 import org.springframework.mail.javamail.JavaMailSender;
-import org.springframework.stereotype.Service;
+import org.springframework.stereotype.Component;
 
+@Component
 @RequiredArgsConstructor
-@Service
-public class EmailSenderService {
+public class EmailSenderComponent {
+
     private final JavaMailSender mailSender;
 
     public void sendSimpleEmail(String toEmail,
