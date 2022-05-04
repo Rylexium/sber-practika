@@ -30,49 +30,49 @@ class TransferBankCardControllerTest {
                     new JSONObject()
                         .put("bankNumber", "18649937255896693161")
                         .put("bankCard", "5234234343124321")
-                        .put("value", "100")),"Успешный перевод");
+                        .put("value", "100")),"РЈСЃРїРµС€РЅС‹Р№ РїРµСЂРµРІРѕРґ");
             Assert.isTrue(!transfer(getJWT(),
                         "bankNumber_to_bankCard",
                         new JSONObject()
                             .put("bankNumber", "18649937255896693161")
                             .put("bankCard", "5234234343124321")
-                            .put("value", "-100")), "Отрицательное число");
+                            .put("value", "-100")), "РћС‚СЂРёС†Р°С‚РµР»СЊРЅРѕРµ С‡РёСЃР»Рѕ");
             Assert.isTrue(!transfer(getJWT(),
                         "bankNumber_to_bankCard",
                         new JSONObject()
                             .put("bankNumber", "18649937255896693161")
                             .put("bankCard", "8787314829830131")
-                            .put("value", "10000000")), "Нехватка средств на карте");
+                            .put("value", "10000000")), "РќРµС…РІР°С‚РєР° СЃСЂРµРґСЃС‚РІ РЅР° РєР°СЂС‚Рµ");
             Assert.isTrue(!transfer(getJWT(),
                         "bankNumber_to_bankCard",
                         new JSONObject()
                             .put("bankNumber", "18649937255896693161")
                             .put("bankCard", "4752154192152587")
-                            .put("value", "100")), "Срок карты");
+                            .put("value", "100")), "РЎСЂРѕРє РєР°СЂС‚С‹");
             Assert.isTrue(!transfer(getJWT(),
                         "bankNumber_to_bankCard",
                         new JSONObject()
                             .put("bankNumber", "18649937255896693161")
                             .put("bankCard", "1234123412341234")
-                            .put("value", "100")), "Не наход карты");
+                            .put("value", "100")), "РќРµ РЅР°С…РѕРґ РєР°СЂС‚С‹");
             Assert.isTrue(!transfer(getJWT(),
                         "bankNumber_to_bankCard",
                         new JSONObject()
                             .put("bankNumber", "18649937255896693162")
                             .put("bankCard", "5234234343124321")
-                            .put("value", "100")), "Не наход счёта");
+                            .put("value", "100")), "РќРµ РЅР°С…РѕРґ СЃС‡С‘С‚Р°");
             Assert.isTrue(!transfer(getJWT(),
                     "bankNumber_to_bankCard",
                             new JSONObject()
                                 .put("bankNumber", "18649937255896693161")
                                 .put("bankCard", "7722702991638932")
-                                .put("value", "100")), "Статус карты");
+                                .put("value", "100")), "РЎС‚Р°С‚СѓСЃ РєР°СЂС‚С‹");
             Assert.isTrue(!transfer(getJWT(),
                         "bankNumber_to_bankCard",
                         new JSONObject()
                             .put("bankNumber", "18649937255896693169")
                             .put("bankCard", "5234234343124321")
-                            .put("value", "100")), "Статус счёта");
+                            .put("value", "100")), "РЎС‚Р°С‚СѓСЃ СЃС‡С‘С‚Р°");
     }
 
     @Test
@@ -89,31 +89,31 @@ class TransferBankCardControllerTest {
                 new JSONObject()
                         .put("bankCard1", "1457345448336542")
                         .put("bankCard2", "7302903045234380")
-                        .put("value", "1")), "Успешный перевод");
+                        .put("value", "1")), "РЈСЃРїРµС€РЅС‹Р№ РїРµСЂРµРІРѕРґ");
         Assert.isTrue(!transfer(getJWT(),
                 "bankCard_to_bankCard",
                 new JSONObject()
                         .put("bankCard1", "1457345448336542")
                         .put("bankCard2", "7302903045234380")
-                        .put("value", "-10")), "Отрицательное число");
+                        .put("value", "-10")), "РћС‚СЂРёС†Р°С‚РµР»СЊРЅРѕРµ С‡РёСЃР»Рѕ");
         Assert.isTrue(!transfer(getJWT(),
                 "bankCard_to_bankCard",
                 new JSONObject()
                         .put("bankCard1", "1457345448336541")
                         .put("bankCard2", "7302903045234380")
-                        .put("value", "1")), "Не наход банковской карты1");
+                        .put("value", "1")), "РќРµ РЅР°С…РѕРґ Р±Р°РЅРєРѕРІСЃРєРѕР№ РєР°СЂС‚С‹1");
         Assert.isTrue(!transfer(getJWT(),
                 "bankCard_to_bankCard",
                 new JSONObject()
                         .put("bankCard1", "1457345448336542")
                         .put("bankCard2", "7302903045234381")
-                        .put("value", "1")), "Не наход банковской карты2");
+                        .put("value", "1")), "РќРµ РЅР°С…РѕРґ Р±Р°РЅРєРѕРІСЃРєРѕР№ РєР°СЂС‚С‹2");
         Assert.isTrue(!transfer(getJWT(),
                 "bankCard_to_bankCard",
                 new JSONObject()
                         .put("bankCard1", "1457345448336542")
                         .put("bankCard2", "1457345448336542")
-                        .put("value", "1")), "Одинаковые карты");
+                        .put("value", "1")), "РћРґРёРЅР°РєРѕРІС‹Рµ РєР°СЂС‚С‹");
     }
 
     @Test
@@ -124,25 +124,25 @@ class TransferBankCardControllerTest {
                 new JSONObject()
                         .put("bankCard", "1457345448336542")
                         .put("phone", "89371727345")
-                        .put("value", "1")), "Успешный перевод");
+                        .put("value", "1")), "РЈСЃРїРµС€РЅС‹Р№ РїРµСЂРµРІРѕРґ");
         Assert.isTrue(!transfer(getJWT(),
                 "bankCard_to_phone",
                 new JSONObject()
                         .put("bankCard", "1457345448336542")
                         .put("phone", "89371727345")
-                        .put("value", "-1")), "Отрицательное число");
+                        .put("value", "-1")), "РћС‚СЂРёС†Р°С‚РµР»СЊРЅРѕРµ С‡РёСЃР»Рѕ");
         Assert.isTrue(!transfer(getJWT(),
                 "bankCard_to_phone",
                 new JSONObject()
                         .put("bankCard", "1457345448336541")
                         .put("phone", "89371727345")
-                        .put("value", "1")), "Не наход банковской карты");
+                        .put("value", "1")), "РќРµ РЅР°С…РѕРґ Р±Р°РЅРєРѕРІСЃРєРѕР№ РєР°СЂС‚С‹");
         Assert.isTrue(!transfer(getJWT(),
                 "bankCard_to_phone",
                 new JSONObject()
                         .put("bankCard", "1457345448336542")
                         .put("phone", "89371727346")
-                        .put("value", "1")), "Не наход банковский счёт по телефону");
+                        .put("value", "1")), "РќРµ РЅР°С…РѕРґ Р±Р°РЅРєРѕРІСЃРєРёР№ СЃС‡С‘С‚ РїРѕ С‚РµР»РµС„РѕРЅСѓ");
 
     }
 }
