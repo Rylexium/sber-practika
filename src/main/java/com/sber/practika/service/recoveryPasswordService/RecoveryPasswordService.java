@@ -1,4 +1,4 @@
-package com.sber.practika.service;
+package com.sber.practika.service.recoveryPasswordService;
 
 import com.sber.practika.entity.Users;
 import com.sber.practika.repo.UsersRepository;

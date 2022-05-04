@@ -4,7 +4,7 @@ import com.sber.practika.models.requests.support.confirmCode.SupportRequestConfi
 import com.sber.practika.models.requests.support.confirmCode.SupportRequestConfirmCodeAndPhone;
 import com.sber.practika.models.requests.support.confirmCode.SupportRequestConfirmCodeAndUsername;
 import com.sber.practika.security.jwt.JwtTokenProvider;
-import com.sber.practika.service.RecoveryPasswordService;
+import com.sber.practika.service.recoveryPasswordService.RecoveryPasswordService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.web.bind.annotation.*;
 

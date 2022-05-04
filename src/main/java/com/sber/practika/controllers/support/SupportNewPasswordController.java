@@ -3,7 +3,7 @@ package com.sber.practika.controllers.support;
 import com.sber.practika.models.requests.support.newPassword.SupportRequestNewPasswordAndBankCard;
 import com.sber.practika.models.requests.support.newPassword.SupportRequestNewPasswordAndPhone;
 import com.sber.practika.models.requests.support.newPassword.SupportRequestNewPasswordAndUsername;
-import com.sber.practika.service.RecoveryPasswordService;
+import com.sber.practika.service.recoveryPasswordService.RecoveryPasswordService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.web.bind.annotation.*;
 
