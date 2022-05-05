@@ -81,7 +81,8 @@ public class TransferComponent {
         user1.setBalanceBank(user1.getBalanceBank().subtract(value)); // убираем
         user2.setBalanceBank(user2.getBalanceBank().add(value));      // добавляем
 
-        usersRepository.saveAll(List.of(user1, user2));
+        usersRepository.save(user1);
+        usersRepository.save(user2);
     }
     public void transferBankNumberToBankCard(Users user, BankCard card, BigInteger value) {
         checkStatusUser(user);
@@ -121,6 +122,7 @@ public class TransferComponent {
         card1.setBalance(card1.getBalance().subtract(value)); // убираем
         card2.setBalance(card2.getBalance().add(value));      // добавляем
 
-        bankCardRepository.saveAll(List.of(card1, card2));
+        bankCardRepository.save(card1);
+        bankCardRepository.save(card2);
     }
 }
