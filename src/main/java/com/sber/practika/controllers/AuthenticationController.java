@@ -10,6 +10,7 @@ import com.sber.practika.security.jwt.JwtTokenProvider;
 import com.sber.practika.service.authorizationService.AuthorizationService;
 import com.sber.practika.service.userInfoService.UserInfoService;
 import lombok.RequiredArgsConstructor;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
@@ -24,6 +25,9 @@ public class AuthenticationController {
     private final UserInfoService userInfoService;
     private final AuthorizationService authorizationComponent;
     private final JwtTokenProvider jwtTokenProvider;
+
+    @Value("${jwt.token.expired}")
+    private Long expired; //отсылаем клиенту, чтобы знал сколько действует
 
     @RequestMapping("/hello")
     public Object authorization() {
@@ -47,6 +51,7 @@ public class AuthenticationController {
                     put("status", "ok");
                     put("token", jwtTokenProvider.createToken(authenticationRequest.getPhone().toString()));
                     put("body", userInfoService.selectInfoByPhone(authenticationRequest.getPhone()));
+                    put("expired", expired);
                 }
             });
         } catch (Exception e) {
@@ -69,6 +74,7 @@ public class AuthenticationController {
                     put("status", "ok");
                     put("token", jwtTokenProvider.createToken(authenticationRequest.getUsername()));
                     put("body", userInfoService.selectInfoByUsername(authenticationRequest.getUsername()));
+                    put("expired", expired);
                 }
             });
         } catch (Exception e) {
@@ -91,6 +97,7 @@ public class AuthenticationController {
                     put("status", "ok");
                     put("token", jwtTokenProvider.createToken(String.valueOf(authenticationRequest.getBankCard())));
                     put("body", userInfoService.selectInfoByBankCard(authenticationRequest.getBankCard()));
+                    put("expired", expired);
                 }
             });
         } catch (Exception e) {
@@ -99,5 +106,5 @@ public class AuthenticationController {
         }
     }
 
-    private HashMap<String, String> error() { return new HashMap<String, String>() {{ put("status", "Invalid bankCard or password");}}; }
+    private HashMap<String, String> error() { return new HashMap<String, String>() {{ put("status", "Invalid date or password");}}; }
 }
