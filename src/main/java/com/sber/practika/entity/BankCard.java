@@ -17,4 +17,5 @@ public class BankCard {
     private String name;
     private BigInteger balance;
     private Status enabled;
+    private Integer cvv;
 }

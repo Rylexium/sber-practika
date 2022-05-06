@@ -1,10 +1,14 @@
 package com.sber.practika.controllers;
 
+import com.sber.practika.entity.Users;
 import com.sber.practika.models.requests.authentication.AuthenticationRequestBankCard;
 import com.sber.practika.models.requests.authentication.AuthenticationRequestPhone;
 import com.sber.practika.models.requests.authentication.AuthenticationRequestUsername;
+import com.sber.practika.repo.BankCardRepository;
+import com.sber.practika.repo.UsersRepository;
 import com.sber.practika.security.jwt.JwtTokenProvider;
 import com.sber.practika.service.authorizationService.AuthorizationService;
+import com.sber.practika.service.userInfoService.UserInfoService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.userdetails.UserDetails;
@@ -17,6 +21,7 @@ import java.util.HashMap;
 @RestController
 @RequestMapping("/")
 public class AuthenticationController {
+    private final UserInfoService userInfoService;
     private final AuthorizationService authorizationComponent;
     private final JwtTokenProvider jwtTokenProvider;
 
@@ -37,11 +42,11 @@ public class AuthenticationController {
             if (user == null)
                 throw new UsernameNotFoundException("User with phone: " + authenticationRequest.getPhone() + " not found");
 
-            return ResponseEntity.ok(new HashMap<String, String>() {
+            return ResponseEntity.ok(new HashMap<String, Object>() {
                 {
                     put("status", "ok");
-                    put("phone", authenticationRequest.getPhone().toString());
                     put("token", jwtTokenProvider.createToken(authenticationRequest.getPhone().toString()));
+                    put("body", userInfoService.selectInfoByPhone(authenticationRequest.getPhone()));
                 }
             });
         } catch (Exception e) {
@@ -59,11 +64,11 @@ public class AuthenticationController {
             if (user == null)
                 throw new UsernameNotFoundException("User with username: " + authenticationRequest.getUsername() + " not found");
 
-            return ResponseEntity.ok(new HashMap<String, String>() {
+            return ResponseEntity.ok(new HashMap<String, Object>() {
                 {
                     put("status", "ok");
-                    put("username", authenticationRequest.getUsername());
                     put("token", jwtTokenProvider.createToken(authenticationRequest.getUsername()));
+                    put("body", userInfoService.selectInfoByUsername(authenticationRequest.getUsername()));
                 }
             });
         } catch (Exception e) {
@@ -81,11 +86,11 @@ public class AuthenticationController {
             if (user == null)
                 throw new UsernameNotFoundException("User with bankCard: " + authenticationRequest.getBankCard() + " not found");
 
-            return ResponseEntity.ok(new HashMap<String, String>() {
+            return ResponseEntity.ok(new HashMap<String, Object>() {
                 {
                     put("status", "ok");
-                    put("bankCard", String.valueOf(authenticationRequest.getBankCard()));
                     put("token", jwtTokenProvider.createToken(String.valueOf(authenticationRequest.getBankCard())));
+                    put("body", userInfoService.selectInfoByBankCard(authenticationRequest.getBankCard()));
                 }
             });
         } catch (Exception e) {
