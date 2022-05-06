@@ -1,9 +1,11 @@
 package com.sber.practika.service.transferService.util;
 
 import com.sber.practika.entity.BankCard;
+import com.sber.practika.entity.Transaction;
 import com.sber.practika.entity.Users;
 import com.sber.practika.models.Status;
 import com.sber.practika.repo.BankCardRepository;
+import com.sber.practika.repo.TransactionTransferRepository;
 import com.sber.practika.repo.UsersRepository;
 import com.sber.practika.service.transferService.transferException.InsufficientFundsException;
 import com.sber.practika.service.transferService.transferException.bankCardException.BankCardExpiredDateException;
@@ -24,12 +26,13 @@ import java.util.stream.Stream;
 public class TransferComponent {
     private final UsersRepository usersRepository;
     private final BankCardRepository bankCardRepository;
+    private final TransactionTransferRepository transactionRepository;
 
     private void checkStatusUser(Users user){
         if(user.getEnabled() == Status.DELETED)
-            throw new BankNumberDeletedException("Банковского счёта : " + user.getBankNumber() + " не существует");
+            throw new BankNumberDeletedException("Банковский счёт : " + user.getBankNumber() + " удален");
         else if(user.getEnabled() == Status.NOT_ACTIVE)
-            throw new BankNumberNotActiveException("Банковский счёт : " + user.getBankNumber() + " не активирован");
+            throw new BankNumberNotActiveException("Банковский счёт : " + user.getBankNumber() + " не активен");
     }
 
     public static String beautifulInputBankCard(String idCard) {
@@ -83,6 +86,9 @@ public class TransferComponent {
 
         usersRepository.save(user1);
         usersRepository.save(user2);
+
+        transactionRepository.save(new Transaction(user1.getBankNumber(), user2.getBankNumber(),
+                null, null, value));
     }
     public void transferBankNumberToBankCard(Users user, BankCard card, BigInteger value) {
         checkStatusUser(user);
@@ -97,6 +103,9 @@ public class TransferComponent {
 
         usersRepository.save(user);
         bankCardRepository.save(card);
+
+        transactionRepository.save(new Transaction(user.getBankNumber(), null,
+                null, card.getId(), value));
     }
     public void transferBankCardToBankNumber(BankCard card, Users user, BigInteger value) {
         checkStatusUser(user);
@@ -111,6 +120,9 @@ public class TransferComponent {
 
         usersRepository.save(user);
         bankCardRepository.save(card);
+
+        transactionRepository.save(new Transaction(null, user.getBankNumber(),
+                card.getId(), null, value));
     }
     public void transferBankCardToBankCard(BankCard card1, BankCard card2, BigInteger value) {
         isPossibleWork(card1);
@@ -124,5 +136,8 @@ public class TransferComponent {
 
         bankCardRepository.save(card1);
         bankCardRepository.save(card2);
+
+        transactionRepository.save(new Transaction(null, null,
+                card1.getId(), card2.getId(), value));
     }
 }
