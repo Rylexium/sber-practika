@@ -9,7 +9,7 @@ import java.util.UUID;
 
 @Data
 @Entity
-public class Transaction {
+public class TransactionTransfer {
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
     private UUID uuid;
@@ -22,7 +22,7 @@ public class Transaction {
     @Temporal(TemporalType.TIMESTAMP)
     private Date date;
 
-    public Transaction(String bankNumber1, String bankNumber2, BigInteger bankCard1, BigInteger bankCard2, BigInteger value) {
+    public TransactionTransfer(String bankNumber1, String bankNumber2, BigInteger bankCard1, BigInteger bankCard2, BigInteger value) {
         this.bankNumber1 = bankNumber1;
         this.bankNumber2 = bankNumber2;
         this.bankCard1 = bankCard1;
@@ -34,7 +34,7 @@ public class Transaction {
     private void onCreate() {
         date = new Date();
     }
-    public Transaction() {
+    public TransactionTransfer() {
 
     }
 }

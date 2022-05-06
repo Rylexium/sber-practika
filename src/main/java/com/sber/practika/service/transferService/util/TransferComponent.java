@@ -1,7 +1,7 @@
 package com.sber.practika.service.transferService.util;
 
 import com.sber.practika.entity.BankCard;
-import com.sber.practika.entity.Transaction;
+import com.sber.practika.entity.TransactionTransfer;
 import com.sber.practika.entity.Users;
 import com.sber.practika.models.Status;
 import com.sber.practika.repo.BankCardRepository;
@@ -87,7 +87,7 @@ public class TransferComponent {
         usersRepository.save(user1);
         usersRepository.save(user2);
 
-        transactionRepository.save(new Transaction(user1.getBankNumber(), user2.getBankNumber(),
+        transactionRepository.save(new TransactionTransfer(user1.getBankNumber(), user2.getBankNumber(),
                 null, null, value));
     }
     public void transferBankNumberToBankCard(Users user, BankCard card, BigInteger value) {
@@ -104,7 +104,7 @@ public class TransferComponent {
         usersRepository.save(user);
         bankCardRepository.save(card);
 
-        transactionRepository.save(new Transaction(user.getBankNumber(), null,
+        transactionRepository.save(new TransactionTransfer(user.getBankNumber(), null,
                 null, card.getId(), value));
     }
     public void transferBankCardToBankNumber(BankCard card, Users user, BigInteger value) {
@@ -121,7 +121,7 @@ public class TransferComponent {
         usersRepository.save(user);
         bankCardRepository.save(card);
 
-        transactionRepository.save(new Transaction(null, user.getBankNumber(),
+        transactionRepository.save(new TransactionTransfer(null, user.getBankNumber(),
                 card.getId(), null, value));
     }
     public void transferBankCardToBankCard(BankCard card1, BankCard card2, BigInteger value) {
@@ -137,7 +137,7 @@ public class TransferComponent {
         bankCardRepository.save(card1);
         bankCardRepository.save(card2);
 
-        transactionRepository.save(new Transaction(null, null,
+        transactionRepository.save(new TransactionTransfer(null, null,
                 card1.getId(), card2.getId(), value));
     }
 }
