@@ -13,7 +13,7 @@ import java.util.HashMap;
 public class TransactionController {
     private final TransactionService transactionService;
 
-    @PostMapping(value = "/bankNumber")     // с карты на банк.счёт
+    @GetMapping(value = "/bankNumber")     // с карты на банк.счёт
     public Object bankCardToBankNumber(@RequestParam("id") String bankNumber) {
         return new HashMap<String, Object>() {
             {
@@ -22,7 +22,7 @@ public class TransactionController {
         };
     }
 
-    @PostMapping(value = "/bankCard")     // с карты на банк.счёт
+    @GetMapping(value = "/bankCard")     // с карты на банк.счёт
     public Object bankCardToBankNumber(@RequestParam("id") BigInteger bankCard) {
         return new HashMap<String, Object>() {
             {
