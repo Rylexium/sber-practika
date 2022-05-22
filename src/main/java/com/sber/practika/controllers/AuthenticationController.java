@@ -1,13 +1,10 @@
 package com.sber.practika.controllers;
 
-import com.sber.practika.entity.Users;
 import com.sber.practika.models.requests.authentication.AuthenticationRequestBankCard;
 import com.sber.practika.models.requests.authentication.AuthenticationRequestPhone;
 import com.sber.practika.models.requests.authentication.AuthenticationRequestUsername;
-import com.sber.practika.repo.BankCardRepository;
-import com.sber.practika.repo.UsersRepository;
 import com.sber.practika.security.jwt.JwtTokenProvider;
-import com.sber.practika.service.authorizationService.AuthorizationService;
+import com.sber.practika.service.authorization.AuthorizationService;
 import com.sber.practika.service.userInfoService.UserInfoService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Value;

@@ -2,8 +2,8 @@ package com.sber.practika.service.recoveryPasswordService;
 
 import com.sber.practika.entity.Users;
 import com.sber.practika.repo.UsersRepository;
-import com.sber.practika.service.emailService.emailException.UserNotFoundException;
-import com.sber.practika.service.transferService.util.TransferComponent;
+import com.sber.practika.service.email.emailException.UserNotFoundException;
+import com.sber.practika.service.transfer.util.TransferComponent;
 import com.sber.practika.util.HashPass;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;

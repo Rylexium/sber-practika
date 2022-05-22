@@ -2,7 +2,7 @@ package com.sber.practika.controllers.finalize;
 
 import com.sber.practika.models.requests.finalize.FinalizeTransferRequestBankCardBetweenBankNumber;
 import com.sber.practika.models.requests.finalize.FinalizeTransferRequestBankCardToBankCard;
-import com.sber.practika.service.finalizeTransferService.FinalizeTransferService;
+import com.sber.practika.service.finalize.FinalizeTransferService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;

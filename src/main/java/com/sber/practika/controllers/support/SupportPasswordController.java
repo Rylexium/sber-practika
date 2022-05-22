@@ -1,8 +1,8 @@
 package com.sber.practika.controllers.support;
 
 
-import com.sber.practika.service.emailService.EmailSenderService;
-import com.sber.practika.service.emailService.emailException.BaseEmailException;
+import com.sber.practika.service.email.EmailSenderService;
+import com.sber.practika.service.email.emailException.BaseEmailException;
 import lombok.RequiredArgsConstructor;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;

@@ -3,7 +3,7 @@ package com.sber.practika.controllers.transfer;
 import com.sber.practika.models.requests.transfer.TransferRequestBankCardBetweenBankNumber;
 import com.sber.practika.models.requests.transfer.TransferRequestBankNumberBetweenBankNumber;
 import com.sber.practika.models.requests.transfer.TransferRequestBankNumberBetweenPhone;
-import com.sber.practika.service.transferService.TransferService;
+import com.sber.practika.service.transfer.TransferService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;

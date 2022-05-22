@@ -1,6 +1,6 @@
 package com.sber.practika.controllers.transaction;
 
-import com.sber.practika.service.transactionService.TransactionService;
+import com.sber.practika.service.transaction.TransactionService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.web.bind.annotation.*;
 

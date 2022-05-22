@@ -2,11 +2,10 @@ package com.sber.practika.service.userInfoService;
 
 import com.sber.practika.dto.userInfo.MinInfoBankCard;
 import com.sber.practika.dto.userInfo.UserAndHisBankCards;
-import com.sber.practika.entity.BankCard;
 import com.sber.practika.entity.Users;
 import com.sber.practika.repo.BankCardRepository;
 import com.sber.practika.repo.UsersRepository;
-import com.sber.practika.service.emailService.emailException.UserNotFoundException;
+import com.sber.practika.service.email.emailException.UserNotFoundException;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
