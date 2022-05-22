@@ -36,10 +36,10 @@ public class TransactionTransfer {
     }
 
     @PrePersist
-    private void onCreate() {
+    @PreUpdate
+    private void onCreateOrUpdate() {
         date = new Date();
     }
     public TransactionTransfer() {
-
     }
 }
