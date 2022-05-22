@@ -1,4 +1,4 @@
-package com.sber.practika.controllers;
+package com.sber.practika.controllers.auth;
 
 import com.sber.practika.models.requests.authentication.AuthenticationRequestBankCard;
 import com.sber.practika.models.requests.authentication.AuthenticationRequestPhone;
