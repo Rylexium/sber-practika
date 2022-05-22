@@ -1,6 +1,5 @@
 package com.sber.practika.entity;
 
-import com.sber.practika.models.StatusTransaction;
 import lombok.Data;
 
 import javax.persistence.*;

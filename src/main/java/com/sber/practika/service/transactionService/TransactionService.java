@@ -1,7 +1,7 @@
 package com.sber.practika.service.transactionService;
 
 import com.sber.practika.entity.TransactionTransfer;
-import com.sber.practika.models.StatusTransaction;
+import com.sber.practika.entity.statuses.StatusTransaction;
 import com.sber.practika.repo.TransactionTransferRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;

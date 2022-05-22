@@ -1,4 +1,4 @@
-package com.sber.practika.models;
+package com.sber.practika.entity.statuses;
 
 public enum StatusTransaction {
     IN_PROGRESS(101), // В обработке

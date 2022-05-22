@@ -1,7 +1,7 @@
 package com.sber.practika.security.jwt;
 
 import com.sber.practika.entity.Users;
-import com.sber.practika.models.Status;
+import com.sber.practika.entity.statuses.Status;
 
 
 public final class JwtUserFactory {

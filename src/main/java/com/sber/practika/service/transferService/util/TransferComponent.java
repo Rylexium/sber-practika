@@ -1,12 +1,9 @@
 package com.sber.practika.service.transferService.util;
 
 import com.sber.practika.entity.BankCard;
-import com.sber.practika.entity.TransactionTransfer;
 import com.sber.practika.entity.Users;
-import com.sber.practika.models.Status;
-import com.sber.practika.models.StatusTransaction;
+import com.sber.practika.entity.statuses.Status;
 import com.sber.practika.repo.BankCardRepository;
-import com.sber.practika.repo.TransactionTransferRepository;
 import com.sber.practika.repo.UsersRepository;
 import com.sber.practika.service.transferService.transferException.InsufficientFundsException;
 import com.sber.practika.service.transferService.transferException.bankCardException.BankCardExpiredDateException;

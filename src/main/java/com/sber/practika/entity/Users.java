@@ -1,6 +1,6 @@
 package com.sber.practika.entity;
 
-import com.sber.practika.models.Status;
+import com.sber.practika.entity.statuses.Status;
 import lombok.Data;
 
 import javax.persistence.Entity;
