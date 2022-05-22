@@ -26,7 +26,7 @@ public class TransactionController {
     public Object bankCardToBankNumber(@RequestParam("id") BigInteger bankCard) {
         return new HashMap<String, Object>() {
             {
-                put("transactions", transactionService.allTransactionsByBankNumber(bankCard));
+                put("transactions", transactionService.allTransactionsByBankCard(bankCard));
             }
         };
     }

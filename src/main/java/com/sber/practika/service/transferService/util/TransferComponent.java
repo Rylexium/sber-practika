@@ -4,6 +4,7 @@ import com.sber.practika.entity.BankCard;
 import com.sber.practika.entity.TransactionTransfer;
 import com.sber.practika.entity.Users;
 import com.sber.practika.models.Status;
+import com.sber.practika.models.StatusTransaction;
 import com.sber.practika.repo.BankCardRepository;
 import com.sber.practika.repo.TransactionTransferRepository;
 import com.sber.practika.repo.UsersRepository;
@@ -18,6 +19,7 @@ import java.math.BigInteger;
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
 import java.util.List;
+import java.util.UUID;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
 
@@ -26,13 +28,17 @@ import java.util.stream.Stream;
 public class TransferComponent {
     private final UsersRepository usersRepository;
     private final BankCardRepository bankCardRepository;
-    private final TransactionTransferRepository transactionRepository;
+    private final RegistrationTransferTransaction registrationTransferTransaction;
 
-    private void checkStatusUser(Users user){
-        if(user.getEnabled() == Status.DELETED)
+    private void checkStatusUser(Users user, UUID uuidTransaction){
+        if(user.getEnabled() == Status.DELETED) {
+            registrationTransferTransaction.cannotBePerformedDueUser(uuidTransaction);
             throw new BankNumberDeletedException("Банковский счёт : " + user.getBankNumber() + " удален");
-        else if(user.getEnabled() == Status.NOT_ACTIVE)
+        }
+        else if(user.getEnabled() == Status.NOT_ACTIVE) {
+            registrationTransferTransaction.cannotBePerformedDueUser(uuidTransaction);
             throw new BankNumberNotActiveException("Банковский счёт : " + user.getBankNumber() + " не активен");
+        }
     }
 
     public static String beautifulInputBankCard(String idCard) {
@@ -43,43 +49,54 @@ public class TransferComponent {
         }
         return res.toString();
     }
-    private void isPossibleWork(BankCard card){
-        checkStatusCard(card);
-        isValidData(card);
+    private void isPossibleWork(BankCard card, UUID uuidTransaction){
+        checkStatusCard(card, uuidTransaction);
+        isValidData(card, uuidTransaction);
     }
-    private void checkStatusCard(BankCard card) {
-        if(card.getEnabled() == Status.DELETED)
+    private void checkStatusCard(BankCard card, UUID uuidTransaction) {
+        if(card.getEnabled() == Status.DELETED) {
+            registrationTransferTransaction.cannotBePerformedDueCard(uuidTransaction);
             throw new BankNumberDeletedException("Карта : " + beautifulInputBankCard(card.getId().toString()) + "не существует");
-        else if(card.getEnabled() == Status.NOT_ACTIVE)
+        }
+        else if(card.getEnabled() == Status.NOT_ACTIVE) {
+            registrationTransferTransaction.cannotBePerformedDueCard(uuidTransaction);
             throw new BankNumberNotActiveException("Карта : " + beautifulInputBankCard(card.getId().toString()) + " не активирован");
+        }
     }
-    private void isValidData(BankCard card) {
+    private void isValidData(BankCard card, UUID uuidTransaction) {
         // 05 22 - now
         // 04 23 - card Date
         List<Integer> nowDate = Stream.of(LocalDateTime.now()
-                                            .format(DateTimeFormatter.ofPattern("MM/yy")).split("/"))
-                                            .map(Integer::parseInt)
-                                            .collect(Collectors.toList());
+                        .format(DateTimeFormatter.ofPattern("MM/yy")).split("/"))
+                .map(Integer::parseInt)
+                .collect(Collectors.toList());
         List<Integer> cardDate = Stream.of(card.getDate().split("/"))
-                                                        .map(Integer::parseInt)
-                                                        .collect(Collectors.toList());
+                .map(Integer::parseInt)
+                .collect(Collectors.toList());
         // 1 - год
         // 0 - месяц
         // текущий год больше, чем год карты
         // ИЛИ
         // года совпадают -> то смотрим на месяц, если текущий месяц больше месяца карты
-        if( (nowDate.get(1) > cardDate.get(1)) // текущий год больше, чем год карты
+        if ((nowDate.get(1) > cardDate.get(1)) // текущий год больше, чем год карты
                 ||
-                (nowDate.get(1).equals(cardDate.get(1)) && nowDate.get(0) > cardDate.get(0)))
+                (nowDate.get(1).equals(cardDate.get(1)) && nowDate.get(0) > cardDate.get(0))) {
+            registrationTransferTransaction.cannotBePerformedDueCard(uuidTransaction);
             throw new BankCardExpiredDateException("Срок карты : " + beautifulInputBankCard(card.getId().toString()) + "истёк");
+        }
+    }
+    private void isHaveMoney(BigInteger balance, BigInteger value, UUID uuidTransaction) {
+        if(balance.subtract(value).compareTo(BigInteger.ZERO) < 0) {
+            registrationTransferTransaction.noMoney(uuidTransaction);
+            throw new InsufficientFundsException("Недостаточно денег для перевода");
+        }
     }
 
-    public void transferBankNumberToBankNumber(Users user1, Users user2, BigInteger value) {
-        checkStatusUser(user1);
-        checkStatusUser(user2);
+    public void transferBankNumberToBankNumber(Users user1, Users user2, BigInteger value, UUID uuidTransaction) {
+        checkStatusUser(user1, uuidTransaction);
+        checkStatusUser(user2, uuidTransaction);
 
-        if(user1.getBalanceBank().subtract(value).compareTo(BigInteger.ZERO) < 0)
-            throw new InsufficientFundsException("Недостаточно денег для перевода с карты");
+        isHaveMoney(user1.getBalanceBank(), value, uuidTransaction);
 
         user1.setBalanceBank(user1.getBalanceBank().subtract(value)); // убираем
         user2.setBalanceBank(user2.getBalanceBank().add(value));      // добавляем
@@ -87,16 +104,14 @@ public class TransferComponent {
         usersRepository.save(user1);
         usersRepository.save(user2);
 
-        transactionRepository.save(new TransactionTransfer(user1.getBankNumber(), user2.getBankNumber(),
-                null, null, value));
+        registrationTransferTransaction.access(uuidTransaction);
     }
-    public void transferBankNumberToBankCard(Users user, BankCard card, BigInteger value) {
-        checkStatusUser(user);
+    public void transferBankNumberToBankCard(Users user, BankCard card, BigInteger value, UUID uuidTransaction) {
+        checkStatusUser(user, uuidTransaction);
 
-        isPossibleWork(card);
+        isPossibleWork(card, uuidTransaction);
 
-        if(user.getBalanceBank().subtract(value).compareTo(BigInteger.ZERO) < 0)
-            throw new InsufficientFundsException("Недостаточно денег для перевода с карты");
+        isHaveMoney(user.getBalanceBank(), value, uuidTransaction);
 
         user.setBalanceBank(user.getBalanceBank().subtract(value)); // убираем
         card.setBalance(card.getBalance().add(value));              // добавляем
@@ -104,16 +119,14 @@ public class TransferComponent {
         usersRepository.save(user);
         bankCardRepository.save(card);
 
-        transactionRepository.save(new TransactionTransfer(user.getBankNumber(), null,
-                null, card.getId(), value));
+        registrationTransferTransaction.access(uuidTransaction);
     }
-    public void transferBankCardToBankNumber(BankCard card, Users user, BigInteger value) {
-        checkStatusUser(user);
+    public void transferBankCardToBankNumber(BankCard card, Users user, BigInteger value, UUID uuidTransaction) {
+        checkStatusUser(user, uuidTransaction);
 
-        isPossibleWork(card);
+        isPossibleWork(card, uuidTransaction);
 
-        if(card.getBalance().subtract(value).compareTo(BigInteger.ZERO) < 0)
-            throw new InsufficientFundsException("Недостаточно денег для перевода с карты");
+        isHaveMoney(card.getBalance(), value, uuidTransaction);
 
         card.setBalance(card.getBalance().subtract(value));    // убираем
         user.setBalanceBank(user.getBalanceBank().add(value)); // добавляем
@@ -121,15 +134,13 @@ public class TransferComponent {
         usersRepository.save(user);
         bankCardRepository.save(card);
 
-        transactionRepository.save(new TransactionTransfer(null, user.getBankNumber(),
-                card.getId(), null, value));
+        registrationTransferTransaction.access(uuidTransaction);
     }
-    public void transferBankCardToBankCard(BankCard card1, BankCard card2, BigInteger value) {
-        isPossibleWork(card1);
-        isPossibleWork(card2);
+    public void transferBankCardToBankCard(BankCard card1, BankCard card2, BigInteger value, UUID uuidTransaction) {
+        isPossibleWork(card1, uuidTransaction);
+        isPossibleWork(card2, uuidTransaction);
 
-        if(card1.getBalance().subtract(value).compareTo(BigInteger.ZERO) < 0)
-            throw new InsufficientFundsException("Недостаточно денег для перевода с карты");
+        isHaveMoney(card1.getBalance(), value, uuidTransaction);
 
         card1.setBalance(card1.getBalance().subtract(value)); // убираем
         card2.setBalance(card2.getBalance().add(value));      // добавляем
@@ -137,7 +148,6 @@ public class TransferComponent {
         bankCardRepository.save(card1);
         bankCardRepository.save(card2);
 
-        transactionRepository.save(new TransactionTransfer(null, null,
-                card1.getId(), card2.getId(), value));
+        registrationTransferTransaction.access(uuidTransaction);
     }
 }

@@ -1,5 +1,6 @@
 package com.sber.practika.entity;
 
+import com.sber.practika.models.StatusTransaction;
 import lombok.Data;
 
 import javax.persistence.*;
@@ -21,13 +22,17 @@ public class TransactionTransfer {
 
     @Temporal(TemporalType.TIMESTAMP)
     private Date date;
+    private Integer statusTransaction;
 
-    public TransactionTransfer(String bankNumber1, String bankNumber2, BigInteger bankCard1, BigInteger bankCard2, BigInteger value) {
+    public TransactionTransfer(String bankNumber1, String bankNumber2,
+                               BigInteger bankCard1, BigInteger bankCard2,
+                               BigInteger value, Integer statusTransaction) {
         this.bankNumber1 = bankNumber1;
         this.bankNumber2 = bankNumber2;
         this.bankCard1 = bankCard1;
         this.bankCard2 = bankCard2;
         this.value = value;
+        this.statusTransaction = statusTransaction;
     }
 
     @PrePersist
