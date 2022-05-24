@@ -2,11 +2,10 @@ package com.sber.practika.models.requests.transfer;
 
 import lombok.Data;
 
-import java.math.BigInteger;
 
 @Data
 public class TransferRequestBankCardBetweenBankCard {
-    private BigInteger bankCard1;
-    private BigInteger bankCard2;
-    private BigInteger value;
+    private Long bankCard1;
+    private Long bankCard2;
+    private Long value;
 }

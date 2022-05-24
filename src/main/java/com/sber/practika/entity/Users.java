@@ -5,7 +5,6 @@ import lombok.Data;
 
 import javax.persistence.Entity;
 import javax.persistence.Id;
-import java.math.BigInteger;
 
 @Data
 @Entity
@@ -23,11 +22,11 @@ public class Users {
 
     private String email;
     private String address;
-    private BigInteger phone;
+    private Long phone;
     private String dateOfBirthday;
     private Status enabled;
 
-    private BigInteger balanceBank;
-    private BigInteger mainCardNumber;
+    private Long balanceBank;
+    private Long mainCardNumber;
     private Integer confirmCode;
 }

@@ -9,7 +9,6 @@ import com.sber.practika.service.transfer.transferException.bankNumberException.
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Component;
 
-import java.math.BigInteger;
 import java.util.UUID;
 
 @Component
@@ -19,7 +18,7 @@ public class Searcher {
     private final BankCardRepository bankCardRepository;
     private final RegistrationTransferTransaction registrationTransferTransaction;
 
-    public BankCard searchBankCard(BigInteger bankCard, UUID uuidTransaction) {
+    public BankCard searchBankCard(Long bankCard, UUID uuidTransaction) {
         return bankCardRepository.findById(bankCard)
                 .orElseThrow(() -> {
                     registrationTransferTransaction.cannotBePerformedDueCard(uuidTransaction);
@@ -36,7 +35,7 @@ public class Searcher {
                 });
     }
 
-    public Users searchPhone(BigInteger phone) {
+    public Users searchPhone(Long phone) {
         return usersRepository.findByPhone(phone)
                 .orElseThrow(() -> new BankNumberNotFoundException("Банковский счёт по номеру телефона: " + phone + " не найден"));
     }

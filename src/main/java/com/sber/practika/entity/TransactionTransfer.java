@@ -3,7 +3,6 @@ package com.sber.practika.entity;
 import lombok.Data;
 
 import javax.persistence.*;
-import java.math.BigInteger;
 import java.util.Date;
 import java.util.UUID;
 
@@ -13,23 +12,23 @@ public class TransactionTransfer {
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
     private UUID uuid;
-    private String bankNumber1;
-    private String bankNumber2;
-    private BigInteger bankCard1;
-    private BigInteger bankCard2;
-    private BigInteger value;
+    private String senderBankNumber;
+    private String recipientBankNumber;
+    private Long senderBankCard;
+    private Long recipientBankCard;
+    private Long value;
 
     @Temporal(TemporalType.TIMESTAMP)
     private Date date;
     private Integer statusTransaction;
 
-    public TransactionTransfer(String bankNumber1, String bankNumber2,
-                               BigInteger bankCard1, BigInteger bankCard2,
-                               BigInteger value, Integer statusTransaction) {
-        this.bankNumber1 = bankNumber1;
-        this.bankNumber2 = bankNumber2;
-        this.bankCard1 = bankCard1;
-        this.bankCard2 = bankCard2;
+    public TransactionTransfer(String senderBankNumber, String recipientBankNumber,
+                               Long senderBankCard, Long recipientBankCard,
+                               Long value, Integer statusTransaction) {
+        this.senderBankNumber = senderBankNumber;
+        this.recipientBankNumber = recipientBankNumber;
+        this.senderBankCard = senderBankCard;
+        this.recipientBankCard = recipientBankCard;
         this.value = value;
         this.statusTransaction = statusTransaction;
     }

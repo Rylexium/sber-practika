@@ -20,7 +20,7 @@ public class TransferBankCardController {
     private final TransferService transferService;
 
     @PostMapping(value = "/bankCard_to_bankNumber")     // с карты на банк.счёт
-    public Object bankCardToBankNumber(@RequestBody TransferRequestBankCardBetweenBankNumber request) {
+    public HashMap<String, String> bankCardToBankNumber(@RequestBody TransferRequestBankCardBetweenBankNumber request) {
         return wrapper(() -> transferService.bankCardToBankNumber(
                 request.getBankCard(),
                 request.getBankNumber(),
@@ -28,7 +28,7 @@ public class TransferBankCardController {
     }
 
     @PostMapping(value = "/bankCard_to_bankCard")    // с карты на карту
-    public Object bankCardToBankCard(@RequestBody TransferRequestBankCardBetweenBankCard request) {
+    public HashMap<String, String> bankCardToBankCard(@RequestBody TransferRequestBankCardBetweenBankCard request) {
         return wrapper(() -> transferService.bankCardToBankCard(
                 request.getBankCard1(),
                 request.getBankCard2(),
@@ -36,7 +36,7 @@ public class TransferBankCardController {
     }
 
     @PostMapping(value = "/bankCard_to_phone")    // с карты на карту
-    public Object bankCardToPhone(@RequestBody TransferRequestBankCardBetweenPhone request) {
+    public HashMap<String, String> bankCardToPhone(@RequestBody TransferRequestBankCardBetweenPhone request) {
         return wrapper(() -> transferService.bankCardToPhone(
                 request.getBankCard(),
                 request.getPhone(),

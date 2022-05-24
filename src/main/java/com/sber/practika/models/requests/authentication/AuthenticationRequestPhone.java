@@ -6,6 +6,6 @@ import java.math.BigInteger;
 
 @Data
 public class AuthenticationRequestPhone {
-    private BigInteger phone;
+    private Long phone;
     private String password;
 }

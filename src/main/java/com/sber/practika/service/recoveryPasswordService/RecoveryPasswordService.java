@@ -8,8 +8,6 @@ import com.sber.practika.util.HashPass;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
-import java.math.BigInteger;
-
 @RequiredArgsConstructor
 @Service
 public class RecoveryPasswordService {
@@ -26,7 +24,7 @@ public class RecoveryPasswordService {
         return false;
     }
 
-    public boolean isTrueConfirmCodeByPhone(BigInteger phone, Integer code) {
+    public boolean isTrueConfirmCodeByPhone(Long phone, Integer code) {
         Users user = usersRepository.findByPhone(phone)
                 .orElseThrow(() -> new UserNotFoundException("Пользователя с таким phone : " + phone + " нет"));
         if(user.getConfirmCode() != null && user.getConfirmCode().equals(code)){
@@ -37,7 +35,7 @@ public class RecoveryPasswordService {
         return false;
     }
 
-    public boolean isTrueConfirmCodeByBankCard(BigInteger bankCard, Integer code) {
+    public boolean isTrueConfirmCodeByBankCard(Long bankCard, Integer code) {
         Users user = usersRepository.findByCardNumber(bankCard)
                 .orElseThrow(() -> new UserNotFoundException("Пользователя с такой банковской картой : "
                         + TransferComponent.beautifulInputBankCard(bankCard.toString()) + " нет"));
@@ -57,14 +55,14 @@ public class RecoveryPasswordService {
         usersRepository.save(user);
     }
 
-    public void newPasswordByPhone(BigInteger phone, String newPassword) {
+    public void newPasswordByPhone(Long phone, String newPassword) {
         Users user = usersRepository.findByPhone(phone)
                 .orElseThrow(() -> new UserNotFoundException("Такого пользователя нет"));
         user.setPassword(HashPass.getHashSha256(newPassword, user.getSalt1(), user.getSalt2()));
         usersRepository.save(user);
     }
 
-    public void newPasswordByBankCard(BigInteger bankCard, String newPassword) {
+    public void newPasswordByBankCard(Long bankCard, String newPassword) {
         Users user = usersRepository.findByCardNumber(bankCard)
                 .orElseThrow(() -> new UserNotFoundException("Такого пользователя нет"));
         user.setPassword(HashPass.getHashSha256(newPassword, user.getSalt1(), user.getSalt2()));

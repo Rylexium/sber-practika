@@ -10,6 +10,8 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
+import java.util.HashMap;
+
 import static com.sber.practika.controllers.transfer.TransferBankCardController.wrapper;
 
 @RequiredArgsConstructor
@@ -19,7 +21,7 @@ public class TransferBankNumberController {
     private final TransferService transferService;
 
     @PostMapping(value = "/bankNumber_to_bankNumber")    // с банк.счёта на карту
-    public Object bankNumberToBankNumber(@RequestBody TransferRequestBankNumberBetweenBankNumber request) {
+    public HashMap<String, String> bankNumberToBankNumber(@RequestBody TransferRequestBankNumberBetweenBankNumber request) {
         return wrapper(() -> transferService.bankNumberToBankNumber(
                 request.getBankNumber1(),
                 request.getBankNumber2(),
@@ -27,7 +29,7 @@ public class TransferBankNumberController {
     }
 
     @PostMapping(value = "/bankNumber_to_bankCard")    // с банк.счёта на банк.счёт
-    public Object bankNumberToBankCard(@RequestBody TransferRequestBankCardBetweenBankNumber request) {
+    public HashMap<String, String> bankNumberToBankCard(@RequestBody TransferRequestBankCardBetweenBankNumber request) {
         return wrapper(() -> transferService.bankNumberToBankCard(
                 request.getBankNumber(),
                 request.getBankCard(),
@@ -35,7 +37,7 @@ public class TransferBankNumberController {
     }
 
     @PostMapping(value = "/bankNumber_to_phone")    // с банк.счёта на банк.счёт по телефону
-    public Object bankNumberToPhone(@RequestBody TransferRequestBankNumberBetweenPhone request) {
+    public HashMap<String, String> bankNumberToPhone(@RequestBody TransferRequestBankNumberBetweenPhone request) {
         return wrapper(() -> transferService.bankNumberToPhone(
                 request.getBankNumber(),
                 request.getPhone(),

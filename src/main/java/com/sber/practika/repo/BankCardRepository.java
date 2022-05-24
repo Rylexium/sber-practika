@@ -10,7 +10,7 @@ import java.util.List;
 import java.util.Optional;
 
 public interface BankCardRepository extends JpaRepository<BankCard, BigInteger> {
-    Optional<BankCard> findById(BigInteger id);
+    Optional<BankCard> findById(Long id);
 
     @Query(value = "select * from bank_card where bank_number=:bank_number", nativeQuery = true)
     List<BankCard> findAllByBankNumber(@Param("bank_number") String bankNumber);

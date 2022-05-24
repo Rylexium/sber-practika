@@ -4,7 +4,6 @@ import lombok.Data;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
 
-import java.math.BigInteger;
 import java.util.Collection;
 
 @Data
@@ -20,8 +19,8 @@ public class JwtUser implements UserDetails {
     private final String address;
     private final boolean enabled;
     private final String bankNumber;
-    private final BigInteger balanceBank;
-    private final BigInteger mainCardNumber;
+    private final Long balanceBank;
+    private final Long mainCardNumber;
 
     public JwtUser(String phone, String password,
                    String name, String family, String patronymic,
@@ -29,8 +28,8 @@ public class JwtUser implements UserDetails {
                    String email,
                    String address, boolean isEnabled,
                    String bankNumber,
-                   BigInteger balanceBank,
-                   BigInteger mainCardNumber) {
+                   Long balanceBank,
+                   Long mainCardNumber) {
         this.username = phone.toString();
         this.name = name;
         this.family = family;

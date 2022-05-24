@@ -9,7 +9,6 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
-import java.math.BigInteger;
 import java.util.HashMap;
 
 @RequiredArgsConstructor
@@ -25,12 +24,12 @@ public class SupportPasswordController {
     }
 
     @GetMapping(value = "phone")
-    public HashMap<String, String> rememberPasswordByPhone(@RequestParam("phone") BigInteger phone){
+    public HashMap<String, String> rememberPasswordByPhone(@RequestParam("phone") Long phone){
         return wrapper(() -> emailSenderService.findByPhoneAndSend(phone));
     }
 
     @GetMapping(value = "bankCard")
-    public HashMap<String, String> rememberPasswordByBankCard(@RequestParam("bankCard") BigInteger bankCard){
+    public HashMap<String, String> rememberPasswordByBankCard(@RequestParam("bankCard") Long bankCard){
         return wrapper(() -> emailSenderService.findByBankCardAndSend(bankCard));
     }
 

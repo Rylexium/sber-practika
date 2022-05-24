@@ -9,12 +9,12 @@ import java.math.BigInteger;
 import java.util.Optional;
 
 public interface UsersRepository extends JpaRepository<Users, String> {
-    Optional<Users> findByPhone(BigInteger phone);
+    Optional<Users> findByPhone(Long phone);
     Optional<Users> findByUsername(String username);
 
     @Query(value =
             "select * " +
             "from users " +
             "where bank_number = (select bank_number from bank_card where id=:cardNumber)", nativeQuery = true)
-    Optional<Users> findByCardNumber(@Param("cardNumber") BigInteger cardNumber);
+    Optional<Users> findByCardNumber(@Param("cardNumber") Long cardNumber);
 }

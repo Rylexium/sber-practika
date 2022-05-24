@@ -10,7 +10,6 @@ import com.sber.practika.service.transfer.util.TransferComponent;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
-import java.math.BigInteger;
 
 @RequiredArgsConstructor
 @Service
@@ -23,12 +22,12 @@ public class EmailSenderService {
                 .orElseThrow(() -> new UserNotFoundException("Пользователя с таким username : " + username + " нет")));
     }
 
-    public void findByPhoneAndSend(BigInteger phone) throws BaseEmailException {
+    public void findByPhoneAndSend(Long phone) throws BaseEmailException {
         sendEmail(usersRepository.findByPhone(phone)
                 .orElseThrow(() -> new UserNotFoundException("Пользователя с таким phone : " + phone + " нет")));
     }
 
-    public void findByBankCardAndSend(BigInteger bankCard) throws BaseEmailException {
+    public void findByBankCardAndSend(Long bankCard) throws BaseEmailException {
         sendEmail(usersRepository.findByCardNumber(bankCard)
                 .orElseThrow(() -> new UserNotFoundException("Пользователя с такой банковской картой : "
                         + TransferComponent.beautifulInputBankCard(bankCard.toString()) + " нет")));

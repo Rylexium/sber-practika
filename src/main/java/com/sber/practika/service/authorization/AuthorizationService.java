@@ -16,7 +16,7 @@ import java.math.BigInteger;
 public class AuthorizationService {
     private final UsersRepository usersRepository;
 
-    public UserDetails logInByPhone(BigInteger phone, String password) throws UsernameNotFoundException {
+    public UserDetails logInByPhone(Long phone, String password) throws UsernameNotFoundException {
         Users user = usersRepository.findByPhone(phone)
                 .orElseThrow(() -> new UsernameNotFoundException("User with phone: " + phone + " not found"));
 
@@ -36,7 +36,7 @@ public class AuthorizationService {
             throw new UsernameNotFoundException("Invalid username or password");
     }
 
-    public UserDetails logInByBankCard(BigInteger bankCard, String password) throws UsernameNotFoundException {
+    public UserDetails logInByBankCard(Long bankCard, String password) throws UsernameNotFoundException {
         Users user = usersRepository.findByCardNumber(bankCard)
                 .orElseThrow(() -> new UsernameNotFoundException("User with bankCard: " + bankCard + " not found"));
 

@@ -11,11 +11,11 @@ import java.math.BigInteger;
 @Entity
 public class BankCard {
     @Id
-    private BigInteger id;
-    private BigInteger bankNumber;
+    private Long id;
+    private String bankNumber;
     private String date;
     private String name;
-    private BigInteger balance;
+    private Long balance;
     private Status enabled;
     private Integer cvv;
 }

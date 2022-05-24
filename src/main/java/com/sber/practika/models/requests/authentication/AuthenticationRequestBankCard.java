@@ -6,6 +6,6 @@ import java.math.BigInteger;
 
 @Data
 public class AuthenticationRequestBankCard {
-    private BigInteger bankCard;
+    private Long bankCard;
     private String password;
 }

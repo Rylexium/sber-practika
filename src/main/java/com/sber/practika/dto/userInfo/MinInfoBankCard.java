@@ -12,8 +12,8 @@ import java.math.BigInteger;
 @NoArgsConstructor
 @AllArgsConstructor
 public class MinInfoBankCard {
-    private BigInteger id;
+    private Long id;
     private String date;
     private String name;
-    private BigInteger balance;
+    private Long balance;
 }

@@ -13,7 +13,6 @@ import com.sber.practika.service.transfer.util.TransferComponent;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
-import java.math.BigInteger;
 import java.util.UUID;
 
 @Service
@@ -24,134 +23,134 @@ public class TransferService {
     private final TransferComponent transferComponent;
     private final RegistrationTransferTransaction registrationTransferTransaction;
 
-    public void bankCardToBankNumber(BigInteger bankCard, String bankNumber, BigInteger value) {
+    public void bankCardToBankNumber(Long senderBankCardId, String recipientBankNumberId, Long value) {
         isPositiveValue(value);
 
-        UUID uuidTransaction = registrationTransferTransaction.registration(null, bankNumber,
-                bankCard, null, value);
+        UUID uuidTransaction = registrationTransferTransaction.registration(null, recipientBankNumberId,
+                senderBankCardId, null, value);
 
-        BankCard card = searcher.searchBankCard(bankCard, uuidTransaction);
-        Users user = searcher.searchBankNumber(bankNumber, uuidTransaction);
+        BankCard senderBankCard = searcher.searchBankCard(senderBankCardId, uuidTransaction);
+        Users recipientBankNumber = searcher.searchBankNumber(recipientBankNumberId, uuidTransaction);
 
-        transferComponent.transferBankCardToBankNumber(card, user, value, uuidTransaction);
+        transferComponent.transferBankCardToBankNumber(senderBankCard, recipientBankNumber, value, uuidTransaction);
     }
-    public void bankCardToBankCard(BigInteger bankCard1, BigInteger bankCard2, BigInteger value) {
+    public void bankCardToBankCard(Long senderBankCardId, Long recipientBankCardId, Long value) {
         isPositiveValue(value);
-        if(bankCard1.equals(bankCard2))
+        if(senderBankCardId.equals(recipientBankCardId))
             throw new BankCardsEqualsException("Номера карт одинаковые");
 
         UUID uuidTransaction = registrationTransferTransaction.registration(null, null,
-                bankCard1, bankCard2, value);
+                senderBankCardId, recipientBankCardId, value);
 
-        BankCard card1 = searcher.searchBankCard(bankCard1, uuidTransaction);
-        BankCard card2 = searcher.searchBankCard(bankCard2, uuidTransaction);
+        BankCard senderBankCard = searcher.searchBankCard(senderBankCardId, uuidTransaction);
+        BankCard recipientBankCard = searcher.searchBankCard(recipientBankCardId, uuidTransaction);
 
-        transferComponent.transferBankCardToBankCard(card1, card2, value, uuidTransaction);
+        transferComponent.transferBankCardToBankCard(senderBankCard, recipientBankCard, value, uuidTransaction);
     }
-    public void bankCardToPhone(BigInteger bankCard, BigInteger phone, BigInteger value) {
+    public void bankCardToPhone(Long senderBankCardId, Long phone, Long value) {
         isPositiveValue(value);
 
-        Users user = searcher.searchPhone(phone);
+        Users recipientBankNumber = searcher.searchPhone(phone);
 
-        UUID uuidTransaction = registrationTransferTransaction.registration(null, user.getBankNumber(),
-                bankCard, null, value);
+        UUID uuidTransaction = registrationTransferTransaction.registration(null, recipientBankNumber.getBankNumber(),
+                senderBankCardId, null, value);
 
-        BankCard card = searcher.searchBankCard(bankCard, uuidTransaction);
+        BankCard senderBankCard = searcher.searchBankCard(senderBankCardId, uuidTransaction);
 
-        transferComponent.transferBankCardToBankNumber(card, user, value, uuidTransaction);
+        transferComponent.transferBankCardToBankNumber(senderBankCard, recipientBankNumber, value, uuidTransaction);
     }
 
 
-    public void bankNumberToBankNumber(String bankNumber1, String bankNumber2, BigInteger value) {
+    public void bankNumberToBankNumber(String senderBankNumberId, String recipientBankNumberId, Long value) {
         isPositiveValue(value);
 
-        if(bankNumber1.equals(bankNumber2))
+        if(senderBankNumberId.equals(recipientBankNumberId))
             throw new BankCardsEqualsException("Банковские счета одинаковые");
 
         UUID uuidTransaction = registrationTransferTransaction
-                .registration(bankNumber1, bankNumber2, null, null, value);
+                .registration(senderBankNumberId, recipientBankNumberId, null, null, value);
 
-        Users user1 = searcher.searchBankNumber(bankNumber1, uuidTransaction);
-        Users user2 = searcher.searchBankNumber(bankNumber2, uuidTransaction);
+        Users senderBankNumber = searcher.searchBankNumber(senderBankNumberId, uuidTransaction);
+        Users recipientBankNumber = searcher.searchBankNumber(recipientBankNumberId, uuidTransaction);
 
-        transferComponent.transferBankNumberToBankNumber(user1, user2, value, uuidTransaction);
+        transferComponent.transferBankNumberToBankNumber(senderBankNumber, recipientBankNumber, value, uuidTransaction);
     }
-    public void bankNumberToBankCard(String bankNumber, BigInteger bankCard, BigInteger value) {
+    public void bankNumberToBankCard(String senderBankNumberId, Long recipientBankCardId, Long value) {
         isPositiveValue(value);
 
-        UUID uuidTransaction = registrationTransferTransaction.registration(bankNumber, null,
-                null, bankCard, value);
+        UUID uuidTransaction = registrationTransferTransaction.registration(senderBankNumberId, null,
+                null, recipientBankCardId, value);
 
-        Users user = searcher.searchBankNumber(bankNumber, uuidTransaction);
-        BankCard card = searcher.searchBankCard(bankCard, uuidTransaction);
+        Users senderBankNumber = searcher.searchBankNumber(senderBankNumberId, uuidTransaction);
+        BankCard recipientBankCard = searcher.searchBankCard(recipientBankCardId, uuidTransaction);
 
-        transferComponent.transferBankNumberToBankCard(user, card, value, uuidTransaction);
+        transferComponent.transferBankNumberToBankCard(senderBankNumber, recipientBankCard, value, uuidTransaction);
     }
-    public void bankNumberToPhone(String bankNumber, BigInteger phone, BigInteger value) {
+    public void bankNumberToPhone(String senderBankNumberId, Long phone, Long value) {
         isPositiveValue(value);
 
-        Users user1 = usersRepository.findById(bankNumber)
-                .orElseThrow(() -> new BankNumberNotFoundException("Банковский счёт: " + bankNumber + " не найден"));
+        Users senderBankNumber = usersRepository.findById(senderBankNumberId)
+                .orElseThrow(() -> new BankNumberNotFoundException("Банковский счёт: " + senderBankNumberId + " не найден"));
 
-        if(user1.getPhone().equals(phone))
+        if(senderBankNumber.getPhone().equals(phone))
             throw new BankNumbersEqualsException("Одинаковые банковские счета");
 
-        Users user2 = usersRepository.findByPhone(phone)
+        Users recipientBankNumber = usersRepository.findByPhone(phone)
                 .orElseThrow(() -> new BankNumberNotFoundException("Банковский счёт по номеру телефона: " + phone + " не найден"));
 
         UUID uuidTransaction = registrationTransferTransaction
-                .registration(user1.getBankNumber(), user2.getBankNumber(), null, null, value);
+                .registration(senderBankNumber.getBankNumber(), recipientBankNumber.getBankNumber(), null, null, value);
 
-        transferComponent.transferBankNumberToBankNumber(user1, user2, value, uuidTransaction);
+        transferComponent.transferBankNumberToBankNumber(senderBankNumber, recipientBankNumber, value, uuidTransaction);
     }
 
 
-    public void phoneToBankNumber(BigInteger phone, String bankNumber, BigInteger value) {
+    public void phoneToBankNumber(Long phone, String recipientBankNumberId, Long value) {
         isPositiveValue(value);
 
-        Users user1 = usersRepository.findByPhone(phone)
+        Users senderBankNumber = usersRepository.findByPhone(phone)
                 .orElseThrow(() -> new BankNumberNotFoundException("Банковский счёт по номеру телефона: " + phone + " не найден"));
 
-        if(user1.getBankNumber().equals(bankNumber))
+        if(senderBankNumber.getBankNumber().equals(recipientBankNumberId))
             throw new BankNumbersEqualsException("Одинаковые банковские счёта");
 
         UUID uuidTransaction = registrationTransferTransaction
-                .registration(user1.getBankNumber(), bankNumber, null, null, value);
+                .registration(senderBankNumber.getBankNumber(), recipientBankNumberId, null, null, value);
 
-        Users user2 = usersRepository.findById(bankNumber)
-                .orElseThrow(() -> new BankNumberNotFoundException("Банковский счёт: " + bankNumber + " не найден"));
+        Users recipientBankNumber = usersRepository.findById(recipientBankNumberId)
+                .orElseThrow(() -> new BankNumberNotFoundException("Банковский счёт: " + recipientBankNumberId + " не найден"));
 
-        transferComponent.transferBankNumberToBankNumber(user1, user2, value, uuidTransaction);
+        transferComponent.transferBankNumberToBankNumber(senderBankNumber, recipientBankNumber, value, uuidTransaction);
     }
-    public void phoneToBankCard(BigInteger phone, BigInteger bankCard, BigInteger value) {
+    public void phoneToBankCard(Long phone, Long recipientBankCardId, Long value) {
         isPositiveValue(value);
 
-        Users user = searcher.searchPhone(phone);
+        Users senderBankNumber = searcher.searchPhone(phone);
 
-        UUID uuidTransaction = registrationTransferTransaction.registration(null, user.getBankNumber(),
-                bankCard, null, value);
+        UUID uuidTransaction = registrationTransferTransaction.registration(senderBankNumber.getBankNumber(), null,
+                null, recipientBankCardId, value);
 
-        BankCard card = searcher.searchBankCard(bankCard, uuidTransaction);
+        BankCard recipientBankCard = searcher.searchBankCard(recipientBankCardId, uuidTransaction);
 
-        transferComponent.transferBankCardToBankNumber(card, user, value, uuidTransaction);
+        transferComponent.transferBankNumberToBankCard(senderBankNumber, recipientBankCard, value, uuidTransaction);
     }
-    public void phoneToPhone(BigInteger phone1, BigInteger phone2, BigInteger value) {
+    public void phoneToPhone(Long phone1, Long phone2, Long value) {
         isPositiveValue(value);
 
         if(phone1.equals(phone2))
             throw new BankNumbersEqualsException("Одинаковые банковские счета");
 
-        Users user1 = searcher.searchPhone(phone1);
-        Users user2 = searcher.searchPhone(phone2);
+        Users senderBankNumber = searcher.searchPhone(phone1);
+        Users recipientBankNumber = searcher.searchPhone(phone2);
 
         UUID uuidTransaction = registrationTransferTransaction
-                .registration(user1.getBankNumber(), user2.getBankNumber(), null, null, value);
+                .registration(senderBankNumber.getBankNumber(), recipientBankNumber.getBankNumber(), null, null, value);
 
-        transferComponent.transferBankNumberToBankNumber(user1, user2, value, uuidTransaction);
+        transferComponent.transferBankNumberToBankNumber(senderBankNumber, recipientBankNumber, value, uuidTransaction);
     }
 
-    public static void isPositiveValue(BigInteger value) {
-        if(value.signum() != 1) {
+    public static void isPositiveValue(Long value) {
+        if(value <= 0) {
             throw new NegativeTransferValueException("Сумма перевода должна быть положительной");
         }
     }

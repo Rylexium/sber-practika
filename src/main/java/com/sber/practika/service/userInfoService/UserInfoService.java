@@ -9,7 +9,6 @@ import com.sber.practika.service.email.emailException.UserNotFoundException;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
-import java.math.BigInteger;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -25,13 +24,13 @@ public class UserInfoService {
         return getMinInfoUserAndHisBankCards(user);
     }
 
-    public UserAndHisBankCards selectInfoByBankCard(BigInteger bankCard) {
+    public UserAndHisBankCards selectInfoByBankCard(Long bankCard) {
         Users user = usersRepository.findByCardNumber(bankCard)
                 .orElseThrow(() -> new UserNotFoundException("Такого пользователя нет"));
         return getMinInfoUserAndHisBankCards(user);
     }
 
-    public UserAndHisBankCards selectInfoByPhone(BigInteger phone) {
+    public UserAndHisBankCards selectInfoByPhone(Long phone) {
         Users user = usersRepository.findByPhone(phone)
                 .orElseThrow(() -> new UserNotFoundException("Такого пользователя нет"));
         return getMinInfoUserAndHisBankCards(user);

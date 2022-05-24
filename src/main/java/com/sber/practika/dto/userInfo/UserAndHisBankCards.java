@@ -23,9 +23,9 @@ public class UserAndHisBankCards {
 
     private String email;
     private String address;
-    private BigInteger phone;
+    private Long phone;
     private String dateOfBirthday;
 
-    private BigInteger balanceBank;
+    private Long balanceBank;
     private List<MinInfoBankCard> cardList;
 }

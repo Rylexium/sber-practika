@@ -25,12 +25,12 @@ public class JwtUserDetailsService implements UserDetailsService {
                 throw new UsernameNotFoundException("User with username: " + param + " not found");
         }catch(Exception e) {
             if (param.length() == 11) { // поиск по телефону
-                user = usersRepository.findByPhone(new BigInteger(param)).orElse(null);
+                user = usersRepository.findByPhone(Long.valueOf(param)).orElse(null);
                 if (user == null)
                     throw new UsernameNotFoundException("User with phone: " + param + " not found");
             }
             else if(param.length() == 16) { // поиск по банковской карте
-                user = usersRepository.findByCardNumber(new BigInteger(param)).orElse(null);
+                user = usersRepository.findByCardNumber(Long.valueOf(param)).orElse(null);
                 if (user == null)
                     throw new UsernameNotFoundException("User with bankCard: " + param + " not found");
             }

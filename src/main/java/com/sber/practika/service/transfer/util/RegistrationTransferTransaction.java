@@ -6,19 +6,18 @@ import com.sber.practika.repo.TransactionTransferRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Component;
 
-import java.math.BigInteger;
 import java.util.UUID;
 
 @Component
 @RequiredArgsConstructor
 public class RegistrationTransferTransaction {
     private final TransactionTransferRepository transactionTransferRepository;
-    public UUID registration(String bankNumber1, String bankNumber2,
-                                    BigInteger bankCard1, BigInteger bankCard2,
-                                    BigInteger value) {
+    public UUID registration(String senderBankNumber, String recipientBankNumber,
+                                    Long senderBankCard, Long recipientBankCard,
+                                    Long value) {
         TransactionTransfer transactionTransfer = new TransactionTransfer(
-                bankNumber1, bankNumber2,
-                bankCard1, bankCard2,
+                senderBankNumber, recipientBankNumber,
+                senderBankCard,   recipientBankCard,
                 value, StatusTransaction.IN_PROGRESS.getCode());
         transactionTransferRepository.save(transactionTransfer);
 
