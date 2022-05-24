@@ -6,12 +6,9 @@ import org.junit.jupiter.api.Test;
 import org.springframework.util.Assert;
 
 import java.io.IOException;
-import java.util.ArrayList;
-import java.util.List;
 
-import static com.sber.practika.util.ConnectToUrl.getJWT;
-import static com.sber.practika.util.ConnectToUrl.transfer;
-import static org.junit.jupiter.api.Assertions.*;
+import static com.sber.practika.controllers.util.ConnectToUrl.getJWT;
+import static com.sber.practika.controllers.util.ConnectToUrl.transfer;
 
 class TransferBankCardControllerTest {
 

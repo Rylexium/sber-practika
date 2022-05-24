@@ -9,7 +9,7 @@ import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 
-import static com.sber.practika.util.ConnectToUrl.authentication;
+import static com.sber.practika.controllers.util.ConnectToUrl.authentication;
 
 class AuthenticationControllerTest {
     @Test

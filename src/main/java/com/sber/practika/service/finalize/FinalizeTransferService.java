@@ -2,6 +2,9 @@ package com.sber.practika.service.finalize;
 
 import com.sber.practika.entity.BankCard;
 import com.sber.practika.entity.Users;
+import com.sber.practika.entity.statuses.StatusTransaction;
+import com.sber.practika.repo.TransactionTransferRepository;
+import com.sber.practika.service.finalize.exception.TransactionNotInProgress;
 import com.sber.practika.service.transfer.util.Searcher;
 import com.sber.practika.service.transfer.util.TransferComponent;
 import lombok.RequiredArgsConstructor;
@@ -14,8 +17,11 @@ import java.util.UUID;
 public class FinalizeTransferService {
     private final Searcher searcher;
     private final TransferComponent transferComponent;
+    private final TransactionTransferRepository transactionTransferRepository;
 
     public void bankCardToBankNumber(Long bankCard, String bankNumber, Long value, UUID uuidTransaction) {
+        isInProgressTransaction(uuidTransaction);
+
         BankCard card = searcher.searchBankCard(bankCard, uuidTransaction);
         Users user = searcher.searchBankNumber(bankNumber, uuidTransaction);
 
@@ -23,6 +29,8 @@ public class FinalizeTransferService {
     }
 
     public void bankCardToBankCard(Long bankCard1, Long bankCard2, Long value, UUID uuidTransaction) {
+        isInProgressTransaction(uuidTransaction);
+
         BankCard card1 = searcher.searchBankCard(bankCard1, uuidTransaction);
         BankCard card2 = searcher.searchBankCard(bankCard2, uuidTransaction);
 
@@ -30,6 +38,8 @@ public class FinalizeTransferService {
     }
 
     public void bankNumberToBankNumber(String bankNumber1, String bankNumber2, Long value, UUID uuidTransaction) {
+        isInProgressTransaction(uuidTransaction);
+
         Users user1 = searcher.searchBankNumber(bankNumber1, uuidTransaction);
         Users user2 = searcher.searchBankNumber(bankNumber2, uuidTransaction);
 
@@ -37,9 +47,16 @@ public class FinalizeTransferService {
     }
 
     public void bankNumberToBankCard(String bankNumber, Long bankCard, Long value, UUID uuidTransaction) {
+        isInProgressTransaction(uuidTransaction);
+
         BankCard card = searcher.searchBankCard(bankCard, uuidTransaction);
         Users user = searcher.searchBankNumber(bankNumber, uuidTransaction);
 
         transferComponent.transferBankNumberToBankCard(user, card, value, uuidTransaction);
+    }
+
+    private void isInProgressTransaction(UUID uuidTransaction) {
+        if(transactionTransferRepository.getById(uuidTransaction).getStatusTransaction() != StatusTransaction.IN_PROGRESS.getCode())
+            throw new TransactionNotInProgress("UUID : " + uuidTransaction + " уже выполнена");
     }
 }

@@ -1,4 +1,4 @@
-package com.sber.practika.util;
+package com.sber.practika.controllers.util;
 
 import org.json.JSONException;
 import org.json.JSONObject;
