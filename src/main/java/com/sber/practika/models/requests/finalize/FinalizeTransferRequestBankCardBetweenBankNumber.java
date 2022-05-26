@@ -10,4 +10,5 @@ public class FinalizeTransferRequestBankCardBetweenBankNumber {
     private Long bankCard;
     private String bankNumber;
     private Long value;
+
 }
