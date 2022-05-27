@@ -23,7 +23,7 @@ public class TransactionController {
     }
 
     @GetMapping(value = "/bankCard")     // с карты на банк.счёт
-    public Object bankCardToBankNumber(@RequestParam("id") BigInteger bankCard) {
+    public Object bankCardToBankNumber(@RequestParam("id") Long bankCard) {
         return new HashMap<String, Object>() {
             {
                 put("transactions", transactionService.allTransactionsByBankCard(bankCard));

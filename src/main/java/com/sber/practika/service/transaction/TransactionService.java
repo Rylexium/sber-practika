@@ -19,7 +19,7 @@ public class TransactionService {
         return wrapperFilterByStatus(transactionTransferRepository.findAllByBankNumber(bankNumber), StatusTransaction.ACCESS);
     }
 
-    public List<TransactionTransfer> allTransactionsByBankCard(BigInteger bankCard) {
+    public List<TransactionTransfer> allTransactionsByBankCard(Long bankCard) {
         return wrapperFilterByStatus(transactionTransferRepository.findAllByBankCard(bankCard), StatusTransaction.ACCESS);
     }
 

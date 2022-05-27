@@ -18,5 +18,5 @@ public interface TransactionTransferRepository extends JpaRepository<Transaction
     @Query(value =
             "select * from transaction_transfer" +
                     " where :bank_card in (sender_bank_card, recipient_bank_number)", nativeQuery = true)
-    List<TransactionTransfer> findAllByBankCard(@Param("bank_card") BigInteger bank_card);
+    List<TransactionTransfer> findAllByBankCard(@Param("bank_card") Long bank_card);
 }
