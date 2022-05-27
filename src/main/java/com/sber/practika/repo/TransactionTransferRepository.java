@@ -11,11 +11,11 @@ import java.util.UUID;
 public interface TransactionTransferRepository extends JpaRepository<TransactionTransfer, UUID> {
     @Query(value =
             "select * from transaction_transfer " +
-                    "where :bank_number in (bank_number1, bank_number2)", nativeQuery = true)
+                    "where :bank_number in (sender_bank_number, recipient_bank_number)", nativeQuery = true)
     List<TransactionTransfer> findAllByBankNumber(String bank_number);
 
     @Query(value =
             "select * from transaction_transfer" +
-                    " where :bank_card in (bank_card1, bank_card2)", nativeQuery = true)
+                    " where :bank_card in (sender_bank_card, recipient_bank_number)", nativeQuery = true)
     List<TransactionTransfer> findAllByBankCard(BigInteger bank_card);
 }
